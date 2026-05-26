@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    public class Vehicle
+    public abstract class Vehicle
     {
+        protected string m_ModelName;
+        protected string m_LicenseID;
+        protected float m_EnergyPercentageTracker;
+        protected HashSet<Wheel> m_Wheels;
     }
 }

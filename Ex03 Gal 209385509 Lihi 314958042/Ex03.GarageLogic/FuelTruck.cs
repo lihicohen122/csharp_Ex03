@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    internal class FuelTruck
+    internal class FuelTruck : Vehicle
     {
+        private bool m_CanDeliverColdCargo;
+        private float m_CargoVolume;
     }
 }
