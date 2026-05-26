@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36623.8 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03_Logic", "Ex03_Logic\Ex03_Logic.csproj", "{A7E886C5-0D07-4BF5-8290-385C18017FEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03.GarageLogic", "Ex03_Logic\Ex03.GarageLogic.csproj", "{A7E886C5-0D07-4BF5-8290-385C18017FEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03_UI", "Ex03_UI\Ex03_UI.csproj", "{1C0092F7-AD36-4800-BD9C-79824AD837A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03.ConsoleUI", "Ex03_UI\Ex03.ConsoleUI.csproj", "{1C0092F7-AD36-4800-BD9C-79824AD837A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
