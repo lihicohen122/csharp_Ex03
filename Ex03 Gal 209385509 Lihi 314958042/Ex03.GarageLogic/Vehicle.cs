@@ -11,6 +11,7 @@ namespace Ex03.GarageLogic
         protected string m_ModelName;
         protected string m_LicenseID;
         protected float m_EnergyPercentageTracker;
-        protected HashSet<Wheel> m_Wheels;
+        protected List<Wheel> m_Wheels;
+        protected EnergySource m_EnergySource;
     }
 }

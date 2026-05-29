@@ -1,3 +1,4 @@
+using System;
 using Ex03.GarageLogic.Enums;
 
 namespace Ex03.GarageLogic
@@ -5,18 +6,33 @@ namespace Ex03.GarageLogic
     public class Engine : EnergySource
     {
         private readonly eFuelType m_FuelType;
-        private float m_CurrentAmountOfFuel;
         private readonly float m_MaxAmountOfFuel;
-        
+        private float m_CurrentAmountOfFuel;
+
+        public Engine(eFuelType i_FuelType, float i_MaxAmountOfFuel)
+        {
+            m_FuelType = i_FuelType;
+            m_MaxAmountOfFuel = i_MaxAmountOfFuel;
+            m_CurrentAmountOfFuel = 0; // Subject to change (?)
+        }
+        public override float EnergySourcePercentage
+        {
+            get { return (m_CurrentAmountOfFuel / m_MaxAmountOfFuel) * 100; }
+        }
+
         public void addFuelIfPossible(float i_AmountToAdd, eFuelType i_FuelType)
         {
             if(m_MaxAmountOfFuel < m_CurrentAmountOfFuel + i_AmountToAdd)
             {
-                
+                throw new ValueRangeException("Amount to add exceeds maximum fuel capacity");
             }
-            else if(m_FuelType != i_FuelType)
+            else if(i_AmountToAdd < 0)
             {
-                
+                throw new ValueRangeException("Amount of fuel to add cannot be negative");
+            }
+            else if (m_FuelType != i_FuelType)
+            {
+                throw new ArgumentException("Incorrect fuel type");
             }
             else
             {

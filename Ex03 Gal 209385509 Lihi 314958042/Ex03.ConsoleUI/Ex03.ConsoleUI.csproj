@@ -39,5 +39,10 @@
     <Compile Include="Menu.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="VehiclesDB.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
