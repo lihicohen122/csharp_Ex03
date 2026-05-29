@@ -13,11 +13,22 @@ namespace Ex03.GarageLogic
         {
             m_FuelType = i_FuelType;
             m_MaxAmountOfFuel = i_MaxAmountOfFuel;
-            m_CurrentAmountOfFuel = 0; // Subject to change (?)
+            m_CurrentAmountOfFuel = 0;
         }
         public override float EnergySourcePercentage
         {
             get { return (m_CurrentAmountOfFuel / m_MaxAmountOfFuel) * 100; }
+            set
+            {
+                if (value < 0 || value > 100)
+                {
+                    throw new ValueRangeException("Engine percentage must be between 0 and 100");
+                }
+                else
+                {
+                    m_CurrentAmountOfFuel = (value * m_MaxAmountOfFuel) / 100;
+                }
+            }
         }
 
         public void addFuelIfPossible(float i_AmountToAdd, eFuelType i_FuelType)

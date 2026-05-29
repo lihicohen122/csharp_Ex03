@@ -21,6 +21,17 @@ namespace Ex03.GarageLogic
         public float CurrentAirPressure
         {
             get { return m_CurrentAirPressure; }
+            set
+            {
+                if (value < 0 || value > r_MaxAirPressure)
+                {
+                    throw new ValueRangeException("Air pressure must be between 0 and maximum air pressure");
+                }
+                else
+                {
+                    m_CurrentAirPressure = value;
+                }
+            }
         }
 
         public float MaxAirPressure

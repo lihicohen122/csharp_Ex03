@@ -11,7 +11,20 @@ namespace Ex03.GarageLogic
         protected string m_ModelName;
         protected string m_LicenseID;
         protected float m_EnergyPercentageTracker;
-        protected List<Wheel> m_Wheels;
+        protected Wheel[] m_Wheels;
         protected EnergySource m_EnergySource;
+
+        public abstract void initializeSpecificVehicleProperties(string[] i_VehicleProperties);
+
+        public EnergySource EnergySource
+        {
+            get { return m_EnergySource; }
+        }
+
+        public Wheel[] Wheels
+        {
+            get { return m_Wheels; }
+            set { m_Wheels = value; }
+        }
     }
 }

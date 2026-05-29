@@ -5,6 +5,7 @@ namespace Ex03.GarageLogic
         public abstract float EnergySourcePercentage
         {
             get;
+            set;
         }
     }
 }

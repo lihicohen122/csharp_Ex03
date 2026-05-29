@@ -17,6 +17,12 @@ namespace Ex03.GarageLogic
             m_LicenseID = i_LicenseID;
             m_ModelName = i_ModelName;
             m_EnergySource = new Engine(eFuelType.Soler, 125f);
+            Wheels = new Wheel[14];
+        }
+
+        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
+        {
+            throw new NotImplementedException();
         }
     }
 }
