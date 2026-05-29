@@ -11,7 +11,7 @@ namespace Ex03.GarageLogic
         public Battery(float i_MaxBatteryHoursCapacity)
         {
             m_MaxBatteryHoursCapacity = i_MaxBatteryHoursCapacity;
-            m_RemainingBatteryHoursCapacity = 0; // Subject to change (?)
+            m_RemainingBatteryHoursCapacity = 0;
         }
         public override float EnergySourcePercentage
         {
