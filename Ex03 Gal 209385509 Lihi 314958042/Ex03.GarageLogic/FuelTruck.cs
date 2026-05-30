@@ -9,20 +9,46 @@ namespace Ex03.GarageLogic
 {
     internal class FuelTruck : Vehicle
     {
+        private const int k_CanDeliverColdCargoIndex = 8;
+        private const int k_CargoVolumeIndex = 9;
         private bool m_CanDeliverColdCargo;
         private float m_CargoVolume;
+
+        protected override EnergySource CreateEnergySource()
+        {
+            return new Engine(eFuelType.Soler, 125f);
+        }
 
         public FuelTruck(string i_LicenseID, string i_ModelName)
         {
             m_LicenseID = i_LicenseID;
             m_ModelName = i_ModelName;
-            m_EnergySource = new Engine(eFuelType.Soler, 125f);
-            Wheels = new Wheel[14];
         }
 
         public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
-            throw new NotImplementedException();
+            if (i_VehicleProperties.Length != k_ExpectedPropertiesCount)
+            {
+                throw new ArgumentException($"Invalid number of properties. Expected: {k_ExpectedPropertiesCount}");
+            }
+            if (!bool.TryParse(i_VehicleProperties[k_CanDeliverColdCargoIndex], out m_CanDeliverColdCargo))
+            {
+                throw new ArgumentException("Invalid value for can deliver cold cargo. Expected a boolean value.");
+            }
+            if (!float.TryParse(i_VehicleProperties[k_CargoVolumeIndex], out m_CargoVolume) || m_CargoVolume <= 0)
+            {
+                throw new ArgumentException("Invalid value for cargo volume. Expected a positive floating-point number.");
+            }
+        }
+
+        protected override int NumOfWheels
+        {
+            get { return 14; }
+        }
+
+        protected override float MaxAirPressure
+        {
+            get { return 28f; }
         }
     }
 }

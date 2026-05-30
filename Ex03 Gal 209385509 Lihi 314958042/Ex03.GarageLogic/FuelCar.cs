@@ -13,12 +13,11 @@ namespace Ex03.GarageLogic
         {
             m_LicenseID = i_LicenseID;
             m_ModelName = i_ModelName;
-            m_EnergySource = new Engine(eFuelType.Octan95, 51f);
         }
 
-        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
+        protected override EnergySource CreateEnergySource()
         {
-            throw new NotImplementedException();
+            return new Engine(eFuelType.Octan95, 51f);
         }
     }
 }

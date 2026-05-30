@@ -12,7 +12,11 @@ namespace Ex03.GarageLogic
         {
             m_LicenseID = i_LicenseID;
             m_ModelName = i_ModelName;
-            m_EnergySource = new Battery(3f);
+        }
+
+        protected override EnergySource CreateEnergySource()
+        {
+            return new Battery(3f);
         }
 
         public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)

@@ -20,27 +20,78 @@ namespace Ex03.ConsoleUI
 
         private void loadDatafromDatabaseFile()
         {
-            m_garage.loadDatafromDatabaseFile();
+            try
+            {
+                m_garage.LoadDatafromDatabaseFile();
+                Console.WriteLine("Data loaded successfully!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error loading database: {e.Message}");
+            }
         }
 
         private void enterNewVehicleEntryToGarage()
         {
-
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            {
+                Console.WriteLine($"A vehicle with the license plate {licensePlate} is already in the database!");
+                m_garage.SetVehicleInRepairByLicensePlate(licensePlate);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void displayListOfAllLicensePlatesInGarage()
         {
-
+            Console.WriteLine($"All license plates in the garage: {m_garage.DisplayAllLicensePlates()}");
+            // Allow sorting by vehicle state in the future.
         }
 
         private void changeVehicleStateInGarage()
         {
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            {
+                Console.WriteLine($"Please enter the requested new vehicle state for the vehicle with the license plate '{licensePlate}' in the garage ('In Repair', 'Repaired' or 'Paid'): ");
+                string newVehicleState = Console.ReadLine();
 
+                newVehicleState = newVehicleState?.Replace(" ", string.Empty);
+                try
+                {
+                    m_garage.SetVehicleState(licensePlate, newVehicleState);
+                    Console.WriteLine($"Success! The vehicle state for the vehicle with license plate '{licensePlate}' has been updated to '{newVehicleState}'!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error: {e.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Error: There is no vehicle with the license plate {licensePlate} in the database.");
+            }
         }
 
         private void inflateAllWheelsOfVehicleInGarage()
         {
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
 
+            try
+            {
+                m_garage.InflateAllWheelsOfVehicleByLicensePlate(licensePlate);
+                Console.WriteLine($"Success! All wheels in vehicle with license plate '{licensePlate}' are inflated to their maximum pressure!");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+            }
         }
 
         private void fillFuelForFuelBasedVehicleInGarageIfPossible()
@@ -55,7 +106,16 @@ namespace Ex03.ConsoleUI
 
         private void printFullVehicleDataOfVehicleInGarage()
         {
-
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            {
+                // To be implemented in the future
+            }
+            else
+            {
+                Console.WriteLine($"Error: There is no vehicle with the license plate {licensePlate} in the database.");
+            }
         }
 
         public GarageConsoleUI()

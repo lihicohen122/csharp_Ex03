@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
 {
     internal class ValueRangeException : Exception
     {
-        private readonly float m_MaxValue;
+        private readonly float m_MinValue;
         private readonly float m_MaxValue;
         public ValueRangeException(string message) : base(message)
         {

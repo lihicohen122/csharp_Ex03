@@ -8,6 +8,3 @@ ElectricCar,46-389-72,Kia-EV6,68,Pirelli,31,Asaf,055-3214882,Black,4
 ElectricCar,75-128-36,Volvo-XC40,89,Michelin,30,Vered,055-3214883,Yellow,5
 FuelTruck,93-672-18,Renault-T-High,61,Bridgestone,26,Mor,055-3214884,true,32.5
 FuelTruck,28-415-67,Iveco-Stralis,74,Continental,27,Eitan,055-3214885,false,18.9
-*****Remove this line and below:
-THE FORMAT IS:
-VehicleType, LicensePlate, ModelName, EnergyPercentage, TierModel, CurrAirPressure, OwnerName, OwnerPhone, [SPECIFIC VEHICLE PROPERTIES]
