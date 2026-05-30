@@ -1,7 +1,11 @@
 namespace Ex03.GarageLogic
 {
-    public class EnergySource
+    public abstract class EnergySource
     {
-        
+        public abstract float EnergySourcePercentage
+        {
+            get;
+            set;
+        }
     }
 }

@@ -38,19 +38,20 @@
   <ItemGroup>
     <Compile Include="Battery.cs" />
     <Compile Include="Car.cs" />
+    <Compile Include="ValueRangeException.cs" />
     <Compile Include="ElectricCar.cs" />
     <Compile Include="ElectricMotorcycle.cs" />
     <Compile Include="EnergySource.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Enums\eCarColor.cs" />
-    <Compile Include="Enums\eCarState.cs" />
+    <Compile Include="Enums\eVehicleState.cs" />
     <Compile Include="Enums\eFuelType.cs" />
     <Compile Include="Enums\eLicenseType.cs" />
     <Compile Include="Enums\eNumberOfCarDoors.cs" />
     <Compile Include="FuelCar.cs" />
     <Compile Include="FuelMotorcycle.cs" />
     <Compile Include="FuelTruck.cs" />
-    <Compile Include="Garage.cs" />
+    <Compile Include="GarageManager.cs" />
     <Compile Include="Motorcycle.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="VehicleCreator.cs" />
@@ -58,7 +59,9 @@
     <Compile Include="Wheel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Exceptions\" />
+    <Content Include="VehiclesDB.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,6 +6,14 @@ namespace Ex03.GarageLogic
         private float m_CurrentAirPressure;
         private readonly float r_MaxAirPressure;
 
+        private void fillWheelWithAirIfPossible(float i_AirAmountToFill)
+        {
+            if (MaxAirPressure > i_AirAmountToFill + CurrentAirPressure)
+            {
+                m_CurrentAirPressure += i_AirAmountToFill;
+            }
+        }
+
         public Wheel(string i_ManufacturerName, float i_CurrentAirPressure, float i_MaxAirPressure)
         {
             r_ManufacturerName = i_ManufacturerName;
@@ -21,6 +29,17 @@ namespace Ex03.GarageLogic
         public float CurrentAirPressure
         {
             get { return m_CurrentAirPressure; }
+            set
+            {
+                if (value < 0 || value > r_MaxAirPressure)
+                {
+                    throw new ValueRangeException("Air pressure must be between 0 and maximum air pressure");
+                }
+                else
+                {
+                    m_CurrentAirPressure = value;
+                }
+            }
         }
 
         public float MaxAirPressure
@@ -31,12 +50,9 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void fillWheelWithAirIfPossible(float i_AirAmountToFill)
+        public void InflateToMax()
         {
-            if(MaxAirPressure > i_AirAmountToFill + CurrentAirPressure)
-            {
-                m_CurrentAirPressure += i_AirAmountToFill;
-            }
+            fillWheelWithAirIfPossible(MaxAirPressure - CurrentAirPressure);
         }
     }
 }

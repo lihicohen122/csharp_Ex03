@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ex03.GarageLogic.Enums;
 
 namespace Ex03.GarageLogic
 {
@@ -12,6 +13,11 @@ namespace Ex03.GarageLogic
         {
             m_LicenseID = i_LicenseID;
             m_ModelName = i_ModelName;
+        }
+
+        protected override EnergySource CreateEnergySource()
+        {
+            return new Engine(eFuelType.Octan95, 51f);
         }
     }
 }

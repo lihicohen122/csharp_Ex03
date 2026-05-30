@@ -1,0 +1,178 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Ex03.GarageLogic;
+
+namespace Ex03.ConsoleUI
+{
+    internal class GarageConsoleUI
+    {
+        private const int k_QuitOption = 9;
+        private Menu m_garageUIMenu;
+        private GarageManager m_garage;
+
+        private void printWelcomingUserMessage()
+        {
+            Console.WriteLine("Welcome to Gal and Lihi's garage system!");
+        }
+
+        private void loadDatafromDatabaseFile()
+        {
+            try
+            {
+                m_garage.LoadDatafromDatabaseFile();
+                Console.WriteLine("Data loaded successfully!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error loading database: {e.Message}");
+            }
+        }
+
+        private void enterNewVehicleEntryToGarage()
+        {
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            {
+                Console.WriteLine($"A vehicle with the license plate {licensePlate} is already in the database!");
+                m_garage.SetVehicleInRepairByLicensePlate(licensePlate);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void displayListOfAllLicensePlatesInGarage()
+        {
+            Console.WriteLine($"All license plates in the garage: {m_garage.DisplayAllLicensePlates()}");
+            // Allow sorting by vehicle state in the future.
+        }
+
+        private void changeVehicleStateInGarage()
+        {
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            {
+                Console.WriteLine($"Please enter the requested new vehicle state for the vehicle with the license plate '{licensePlate}' in the garage ('In Repair', 'Repaired' or 'Paid'): ");
+                string newVehicleState = Console.ReadLine();
+
+                newVehicleState = newVehicleState?.Replace(" ", string.Empty);
+                try
+                {
+                    m_garage.SetVehicleState(licensePlate, newVehicleState);
+                    Console.WriteLine($"Success! The vehicle state for the vehicle with license plate '{licensePlate}' has been updated to '{newVehicleState}'!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error: {e.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Error: There is no vehicle with the license plate {licensePlate} in the database.");
+            }
+        }
+
+        private void inflateAllWheelsOfVehicleInGarage()
+        {
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+
+            try
+            {
+                m_garage.InflateAllWheelsOfVehicleByLicensePlate(licensePlate);
+                Console.WriteLine($"Success! All wheels in vehicle with license plate '{licensePlate}' are inflated to their maximum pressure!");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+            }
+        }
+
+        private void fillFuelForFuelBasedVehicleInGarageIfPossible()
+        {
+
+        }
+
+        private void chargeBatteryForElectricVehicleInGarageIfPossible()
+        {
+
+        }
+
+        private void printFullVehicleDataOfVehicleInGarage()
+        {
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            {
+                // To be implemented in the future
+            }
+            else
+            {
+                Console.WriteLine($"Error: There is no vehicle with the license plate {licensePlate} in the database.");
+            }
+        }
+
+        public GarageConsoleUI()
+        {
+            m_garageUIMenu = new Menu();
+            m_garage = new GarageManager();
+        }
+
+        public void RunApp()
+        {
+            int userOption = -1;
+
+            printWelcomingUserMessage();
+            while(userOption != k_QuitOption)
+            {
+                m_garageUIMenu.printMenu();
+                string userInput = Console.ReadLine();
+                bool isValidUserOption = int.TryParse(userInput, out userOption);
+
+                while (!isValidUserOption || userOption < 1 || userOption > k_QuitOption)
+                {
+                    Console.WriteLine("Invalid option number. Please enter a valid option.");
+                    userInput = Console.ReadLine();
+                    isValidUserOption = int.TryParse(userInput, out userOption);
+                }
+
+                switch (userOption)
+                {
+                    case 1:
+                        loadDatafromDatabaseFile();
+                        break;
+                    case 2:
+                        enterNewVehicleEntryToGarage();
+                        break;
+                    case 3:
+                        displayListOfAllLicensePlatesInGarage();
+                        break;
+                    case 4:
+                        changeVehicleStateInGarage();
+                        break;
+                    case 5:
+                        inflateAllWheelsOfVehicleInGarage();
+                        break;
+                    case 6:
+                        fillFuelForFuelBasedVehicleInGarageIfPossible();
+                        break;
+                    case 7:
+                        chargeBatteryForElectricVehicleInGarageIfPossible();
+                        break;
+                    case 8:
+                        printFullVehicleDataOfVehicleInGarage();
+                        break;
+                    default:
+                        Console.WriteLine($"Invalid option. Please enter a valid option number (1-{k_QuitOption}).");
+                        break;
+                }
+            }
+        }
+    }
+}
