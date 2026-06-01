@@ -36,6 +36,14 @@ namespace Ex03.GarageLogic
                 throw new ArgumentException("Invalid air wheel pressure value");
             }
         }
+        private Vehicle getVehicleByLicensePlate(string i_LicensePlate)
+        {
+            if(r_Vehicles.TryGetValue(i_LicensePlate, out VehicleOwner vehicleOwner))
+            {
+                return vehicleOwner.Vehicle;
+            }
+            throw new KeyNotFoundException($"The provided license plate '{i_LicensePlate}' was not found in the garage.");
+        }
 
         public GarageManager()
         {
@@ -75,7 +83,7 @@ namespace Ex03.GarageLogic
             return string.Join(", ", r_Vehicles.Keys);
         }
 
-        public bool IsDatabaseContainsLicensePlate(string i_LicensePlate)
+        public bool DoesDatabaseContainLicensePlate(string i_LicensePlate)
         {
             return r_Vehicles.ContainsKey(i_LicensePlate);
         }
@@ -115,6 +123,53 @@ namespace Ex03.GarageLogic
             {
                 throw new KeyNotFoundException($"The provided license plate '{i_LicensePlate}' was not found in the garage.");
             }
+        }
+        
+        public bool IsValidFuelType(string i_FuelType) // do we need wrapper to encapsulate?
+        {
+            return Enum.TryParse(i_FuelType, out eFuelType newFuelType);
+        }
+
+        public void FillGasForFuelVehicle(string i_LicensePlate, string i_FuelType, string i_FuelAmountInput)
+        {
+            if(!float.TryParse(i_FuelAmountInput, out float fuelAmount) || fuelAmount <= 0)
+            {
+                throw new FormatException($"The provided fuel amount '{i_FuelAmountInput}' is not a valid real and positive number.");
+            }
+            if(!Enum.TryParse(i_FuelType, out eFuelType fuelType))
+            {
+                throw new FormatException($"The provided fuel type '{i_FuelType}' is not valid. "
+                                          + $"The possible fuel types are: {string.Join(", ", Enum.GetNames(typeof(eFuelType)))}");
+            }
+            
+            Vehicle vehicleToFillWithGas = getVehicleByLicensePlate(i_LicensePlate);
+            Engine vehicleEngine = vehicleToFillWithGas.EnergySource as Engine;
+            
+            if(vehicleEngine == null)
+            {
+                throw new FormatException($"The vehicle with license plate '{i_LicensePlate}' is not fuel based and therefore cannot be filled with fuel.");
+            }
+
+            vehicleEngine.addFuelIfPossible(fuelAmount, fuelType);
+        }
+
+        public void ChargeBatteryForElectricVehicle(string i_LicensePlate, string i_MinutesToLoadBatteryWithUserUnput)
+        {
+            if(!float.TryParse(i_MinutesToLoadBatteryWithUserUnput, out float minutesToLoadBattery) || minutesToLoadBattery <= 0)
+            {
+                throw new FormatException($"The provided time in minutes '{i_MinutesToLoadBatteryWithUserUnput}' is not a valid real and positive number.");
+            }
+
+            float hoursToLoadBattery = minutesToLoadBattery / 60f;
+            Vehicle vehicleToChargeWithElectricity = getVehicleByLicensePlate(i_LicensePlate);
+            Battery vehicleBattery = vehicleToChargeWithElectricity.EnergySource as Battery;
+            
+            if(vehicleBattery == null)
+            {
+                throw new FormatException($"The vehicle with license plate '{i_LicensePlate}' is not fuel based and therefore cannot be filled with fuel.");
+            }
+
+            vehicleBattery.addHoursToBatteryCapacityIfPossible(hoursToLoadBattery);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Ex03.ConsoleUI
         {
             Console.WriteLine("Please enter the license plate of your vehicle: ");
             string licensePlate = Console.ReadLine();
-            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine($"A vehicle with the license plate {licensePlate} is already in the database!");
                 m_garage.SetVehicleInRepairByLicensePlate(licensePlate);
@@ -56,7 +56,7 @@ namespace Ex03.ConsoleUI
         {
             Console.WriteLine("Please enter the license plate of your vehicle: ");
             string licensePlate = Console.ReadLine();
-            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine($"Please enter the requested new vehicle state for the vehicle with the license plate '{licensePlate}' in the garage ('In Repair', 'Repaired' or 'Paid'): ");
                 string newVehicleState = Console.ReadLine();
@@ -96,19 +96,67 @@ namespace Ex03.ConsoleUI
 
         private void fillFuelForFuelBasedVehicleInGarageIfPossible()
         {
-
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+            
+            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
+            {
+                Console.WriteLine("Please enter vehicle fuel type (Soler, Octan95, Octan97 or Octan98): ");
+                string fuelType = Console.ReadLine();
+                
+                if(m_garage.IsValidFuelType(fuelType))
+                {
+                    Console.WriteLine("Please enter the amount of fuel to fill (in liters): ");
+                    string fuelAmountInput = Console.ReadLine();
+                    try
+                    {
+                        m_garage.FillGasForFuelVehicle(licensePlate, fuelType, fuelAmountInput);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine($"Error: {e.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Error: Invalid fuel type. Please enter one of the following fuel types: Soler, Octan95, Octan97 or Octan98.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Error: There is no vehicle with the license plate {licensePlate} in the database.");
+            }
         }
 
         private void chargeBatteryForElectricVehicleInGarageIfPossible()
         {
-
+            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            string licensePlate = Console.ReadLine();
+            
+            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
+            {
+                Console.WriteLine("How many minutes should we charge the vehicle's battery?");
+                string minutesToLoadBatteryWithUserUnput = Console.ReadLine();
+                try
+                {
+                    m_garage.ChargeBatteryForElectricVehicle(licensePlate, minutesToLoadBatteryWithUserUnput);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine($"Error: {e.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Error: There is no vehicle with the license plate {licensePlate} in the database.");
+            }
         }
 
         private void printFullVehicleDataOfVehicleInGarage()
         {
             Console.WriteLine("Please enter the license plate of your vehicle: ");
             string licensePlate = Console.ReadLine();
-            if(m_garage.IsDatabaseContainsLicensePlate(licensePlate))
+            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 // To be implemented in the future
             }
