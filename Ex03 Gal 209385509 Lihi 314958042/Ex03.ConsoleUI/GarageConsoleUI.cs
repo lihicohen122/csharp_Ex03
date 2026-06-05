@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
 {
     internal class GarageConsoleUI
     {
-        private const int k_QuitOption = 9;
+        private const int k_QuitOption = 10;
         private Menu m_garageUIMenu;
-        private GarageManager m_garage;
+        private GarageManager m_GarageManager;
 
         private void printWelcomingUserMessage()
         {
@@ -22,7 +18,7 @@ namespace Ex03.ConsoleUI
         {
             try
             {
-                m_garage.LoadDatafromDatabaseFile();
+                m_GarageManager.LoadDatafromDatabaseFile();
                 Console.WriteLine("Data loaded successfully!");
             }
             catch (Exception e)
@@ -35,10 +31,10 @@ namespace Ex03.ConsoleUI
         {
             Console.WriteLine("Please enter the license plate of your vehicle: ");
             string licensePlate = Console.ReadLine();
-            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
+            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine($"A vehicle with the license plate {licensePlate} is already in the database!");
-                m_garage.SetVehicleInRepairByLicensePlate(licensePlate);
+                m_GarageManager.SetVehicleInRepairByLicensePlate(licensePlate);
             }
             else
             {
@@ -48,15 +44,35 @@ namespace Ex03.ConsoleUI
 
         private void displayListOfAllLicensePlatesInGarage()
         {
-            Console.WriteLine($"All license plates in the garage: {m_garage.DisplayAllLicensePlates()}");
-            // Allow sorting by vehicle state in the future.
+            Console.WriteLine("Would you like to filter the list by vehicle state? (Yes/No)");
+            string filterAnswer = Console.ReadLine();
+            
+            if(filterAnswer == "Yes")
+            {
+                Console.WriteLine($"Available states: {m_GarageManager.GetAvailableVehicleStates()}");
+                Console.WriteLine("Please enter the vehicle state to filter by:");
+                string vehicleState = Console.ReadLine();
+                
+                try
+                {
+                    Console.WriteLine($"Vehicles in the garage with state '{vehicleState}': {m_GarageManager.DisplayAllLicensePlatesFilteredByState(vehicleState)}");
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine($"Error: {e.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"All license plates in the garage: {m_GarageManager.DisplayAllLicensePlates()}");
+            }
         }
 
         private void changeVehicleStateInGarage()
         {
             Console.WriteLine("Please enter the license plate of your vehicle: ");
             string licensePlate = Console.ReadLine();
-            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
+            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine($"Please enter the requested new vehicle state for the vehicle with the license plate '{licensePlate}' in the garage ('In Repair', 'Repaired' or 'Paid'): ");
                 string newVehicleState = Console.ReadLine();
@@ -64,7 +80,7 @@ namespace Ex03.ConsoleUI
                 newVehicleState = newVehicleState?.Replace(" ", string.Empty);
                 try
                 {
-                    m_garage.SetVehicleState(licensePlate, newVehicleState);
+                    m_GarageManager.SetVehicleState(licensePlate, newVehicleState);
                     Console.WriteLine($"Success! The vehicle state for the vehicle with license plate '{licensePlate}' has been updated to '{newVehicleState}'!");
                 }
                 catch (Exception e)
@@ -85,7 +101,7 @@ namespace Ex03.ConsoleUI
 
             try
             {
-                m_garage.InflateAllWheelsOfVehicleByLicensePlate(licensePlate);
+                m_GarageManager.InflateAllWheelsOfVehicleByLicensePlate(licensePlate);
                 Console.WriteLine($"Success! All wheels in vehicle with license plate '{licensePlate}' are inflated to their maximum pressure!");
             }
             catch(Exception e)
@@ -99,18 +115,18 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("Please enter the license plate of your vehicle: ");
             string licensePlate = Console.ReadLine();
             
-            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
+            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine("Please enter vehicle fuel type (Soler, Octan95, Octan97 or Octan98): ");
                 string fuelType = Console.ReadLine();
                 
-                if(m_garage.IsValidFuelType(fuelType))
+                if(m_GarageManager.IsValidFuelType(fuelType))
                 {
                     Console.WriteLine("Please enter the amount of fuel to fill (in liters): ");
                     string fuelAmountInput = Console.ReadLine();
                     try
                     {
-                        m_garage.FillGasForFuelVehicle(licensePlate, fuelType, fuelAmountInput);
+                        m_GarageManager.FillGasForFuelVehicle(licensePlate, fuelType, fuelAmountInput);
                     }
                     catch(Exception e)
                     {
@@ -133,13 +149,13 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("Please enter the license plate of your vehicle: ");
             string licensePlate = Console.ReadLine();
             
-            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
+            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine("How many minutes should we charge the vehicle's battery?");
                 string minutesToLoadBatteryWithUserUnput = Console.ReadLine();
                 try
                 {
-                    m_garage.ChargeBatteryForElectricVehicle(licensePlate, minutesToLoadBatteryWithUserUnput);
+                    m_GarageManager.ChargeBatteryForElectricVehicle(licensePlate, minutesToLoadBatteryWithUserUnput);
                 }
                 catch(Exception e)
                 {
@@ -156,9 +172,10 @@ namespace Ex03.ConsoleUI
         {
             Console.WriteLine("Please enter the license plate of your vehicle: ");
             string licensePlate = Console.ReadLine();
-            if(m_garage.DoesDatabaseContainLicensePlate(licensePlate))
+            
+            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
-                // To be implemented in the future
+                Console.WriteLine(m_GarageManager.GetFullVehicleProperties(licensePlate));
             }
             else
             {
@@ -169,7 +186,7 @@ namespace Ex03.ConsoleUI
         public GarageConsoleUI()
         {
             m_garageUIMenu = new Menu();
-            m_garage = new GarageManager();
+            m_GarageManager = new GarageManager();
         }
 
         public void RunApp()
@@ -179,7 +196,7 @@ namespace Ex03.ConsoleUI
             printWelcomingUserMessage();
             while(userOption != k_QuitOption)
             {
-                m_garageUIMenu.printMenu();
+                m_garageUIMenu.PrintMenu();
                 string userInput = Console.ReadLine();
                 bool isValidUserOption = int.TryParse(userInput, out userOption);
 

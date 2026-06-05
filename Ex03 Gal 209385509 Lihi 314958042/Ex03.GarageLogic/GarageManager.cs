@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Ex03.GarageLogic.Enums;
 
 namespace Ex03.GarageLogic
@@ -170,6 +171,53 @@ namespace Ex03.GarageLogic
             }
 
             vehicleBattery.addHoursToBatteryCapacityIfPossible(hoursToLoadBattery);
+        }
+
+        public string DisplayAllLicensePlatesFilteredByState(string i_VehicleState)
+        {
+            if(!Enum.TryParse(i_VehicleState, out eVehicleState vehicleState))
+            {
+                throw new ArgumentException($"Invalid vehicle state '{i_VehicleState}'. "
+                    + $"Valid states are: {string.Join(", ", Enum.GetNames(typeof(eVehicleState)))}");
+            }
+
+            List<string> filteredLicenses = new List<string>();
+            foreach(KeyValuePair<string, VehicleOwner> kvp in r_Vehicles)
+            {
+                if(kvp.Value.Vehicle.VehicleState == vehicleState)
+                {
+                    filteredLicenses.Add(kvp.Key);
+                }
+            }
+
+            return string.Join(", ", filteredLicenses);
+        }
+
+        public string GetAvailableVehicleStates()
+        {
+            return string.Join(", ", Enum.GetNames(typeof(eVehicleState)));
+        }
+
+        public string GetFullVehicleProperties(string i_LicensePlate)
+        {
+            if(r_Vehicles.TryGetValue(i_LicensePlate, out VehicleOwner vehicleOwner))
+            {
+                Vehicle vehicle = vehicleOwner.Vehicle;
+                StringBuilder result = new StringBuilder();
+                result.AppendLine("=== FULL VEHICLE INFORMATION ===");
+                result.AppendLine($"License Plate: {vehicle.LicenseId}");
+                result.AppendLine($"Model Name: {vehicle.ModelName}");
+                result.AppendLine($"Owner Name: {vehicleOwner.OwnerName}");
+                result.AppendLine($"Vehicle State: {vehicle.VehicleState}");
+                result.AppendLine($"Owner Phone: {vehicleOwner.OwnerPhoneNumber}");
+                result.AppendLine();
+                result.Append(vehicle.GetVehicleDetailsBody());
+                return result.ToString();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"The provided license plate '{i_LicensePlate}' was not found in the garage.");
+            }
         }
     }
 }

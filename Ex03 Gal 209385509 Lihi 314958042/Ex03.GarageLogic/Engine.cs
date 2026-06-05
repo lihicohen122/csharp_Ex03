@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
             get { return (m_CurrentAmountOfFuel / m_MaxAmountOfFuel) * 100; }
             set
             {
-                if (value < 0 || value > 100)
+                if(value < 0 || value > 100)
                 {
                     throw new ValueRangeException("Engine percentage must be between 0 and 100");
                 }
@@ -41,7 +41,7 @@ namespace Ex03.GarageLogic
             {
                 throw new ValueRangeException("Amount of fuel to add cannot be negative");
             }
-            else if (m_FuelType != i_FuelType)
+            else if(m_FuelType != i_FuelType)
             {
                 throw new ArgumentException("Incorrect fuel type");
             }
@@ -49,6 +49,26 @@ namespace Ex03.GarageLogic
             {
                 m_CurrentAmountOfFuel += i_AmountToAdd;
             }
+        }
+
+        public eFuelType FuelType
+        {
+            get { return m_FuelType; }
+        }
+
+        public float MaxAmountOfFuel
+        {
+            get { return m_MaxAmountOfFuel; }
+        }
+
+        public float CurrentAmountOfFuel
+        {
+            get { return m_CurrentAmountOfFuel; }
+        }
+
+        public override string GetSpecificEnergySourceDetails()
+        {
+            return $"Fuel Type: {m_FuelType}\nCurrent Fuel: {m_CurrentAmountOfFuel:F2} / {m_MaxAmountOfFuel:F2} Liters";
         }
     }
 }

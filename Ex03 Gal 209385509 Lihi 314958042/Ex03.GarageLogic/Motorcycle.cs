@@ -1,5 +1,6 @@
 using System;
 using Ex03.GarageLogic.Enums;
+using System.Text;
 
 namespace Ex03.GarageLogic
 {
@@ -34,6 +35,16 @@ namespace Ex03.GarageLogic
         protected override float MaxAirPressure
         {
             get { return 30f; }
+        }
+
+        protected override string GetSpecificVehicleDetails()
+        {
+            StringBuilder details = new StringBuilder();
+            
+            details.AppendLine($"License Type: {m_LicenseType}");
+            details.AppendLine($"Engine Volume: {m_EngineVolume} cc");
+            
+            return details.ToString();
         }
     }
 }

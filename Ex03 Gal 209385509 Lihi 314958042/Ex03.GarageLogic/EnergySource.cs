@@ -7,5 +7,7 @@ namespace Ex03.GarageLogic
             get;
             set;
         }
+
+        public abstract string GetSpecificEnergySourceDetails();
     }
 }
