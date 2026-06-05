@@ -1,6 +1,4 @@
 using System;
-using Ex03.GarageLogic.Enums;
-
 namespace Ex03.GarageLogic
 {
     public class Battery : EnergySource
@@ -19,7 +17,7 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if (value < 0 || value > 100)
+                if(value < 0 || value > 100)
                 {
                     throw new ValueRangeException("Battery percentage must be between 0 and 100");
                 }
@@ -34,12 +32,17 @@ namespace Ex03.GarageLogic
         {
             if(m_MaxBatteryHoursCapacity < m_RemainingBatteryHoursCapacity + i_numberOfHoursToAdd)
             {
-                
+                throw new ValueRangeException("battery remaining capacity (in hours)", 0, m_MaxBatteryHoursCapacity);
             }
             else
             {
                 m_RemainingBatteryHoursCapacity += i_numberOfHoursToAdd;
             }
+        }
+
+        public override string GetSpecificEnergySourceDetails()
+        {
+            return $"Battery Capacity: {m_RemainingBatteryHoursCapacity:F2} / {m_MaxBatteryHoursCapacity:F2} Hours";
         }
     }
 }

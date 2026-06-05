@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Ex03.GarageLogic.Enums;
 
 namespace Ex03.GarageLogic
@@ -35,6 +36,22 @@ namespace Ex03.GarageLogic
         protected override float MaxAirPressure
         {
             get { return 31f; }
+        }
+
+        protected override string GetSpecificVehicleDetails()
+        {
+            StringBuilder details = new StringBuilder();
+            details.AppendLine($"Car Color: {m_CarColor}");
+            details.AppendLine($"Number of Doors: {m_NumberOfDoors}");
+            return details.ToString();
+        }
+
+        public override Dictionary<string, string> GetSpecificVehicleQuestions()
+        {
+            Dictionary<string, string> questions = new Dictionary<string, string>();
+            questions.Add("CarColor", $"Please enter car color ({string.Join(", ", Enum.GetNames(typeof(eCarColor)))}):");
+            questions.Add("NumberOfDoors", $"Please enter number of doors ({string.Join(", ", Enum.GetNames(typeof(eNumberOfCarDoors)))}):");
+            return questions;
         }
     }
 }

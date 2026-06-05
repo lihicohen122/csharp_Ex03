@@ -1,5 +1,3 @@
-using Ex03.GarageLogic.Enums;
-
 namespace Ex03.GarageLogic
 {
     public class VehicleOwner
@@ -18,6 +16,16 @@ namespace Ex03.GarageLogic
         public Vehicle Vehicle
         {
             get { return m_Vehicle; }
+        }
+
+        public string OwnerName
+        {
+            get { return m_OwnerName; }
+        }
+
+        public string OwnerPhoneNumber
+        {
+            get { return m_OwnerPhoneNumber; }
         }
     }
 }

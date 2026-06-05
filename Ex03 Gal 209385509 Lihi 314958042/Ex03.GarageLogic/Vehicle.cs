@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Ex03.GarageLogic.Enums;
 
 namespace Ex03.GarageLogic
@@ -66,6 +64,16 @@ namespace Ex03.GarageLogic
             get { return m_EnergySource; }
         }
 
+        public string LicenseId
+        {
+            get { return m_LicenseID; }
+        }
+
+        public string ModelName
+        {
+            get { return m_ModelName; }
+        }
+
         public Wheel[] Wheels
         {
             get { return m_Wheels; }
@@ -77,5 +85,52 @@ namespace Ex03.GarageLogic
             get { return m_VehicleState; }
             set { m_VehicleState = value; }
         }
+
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+            
+            result.AppendLine("=== VEHICLE INFORMATION ===");
+            result.AppendLine($"License Plate: {m_LicenseID}");
+            result.AppendLine($"Model Name: {m_ModelName}");
+            result.AppendLine($"Vehicle State: {m_VehicleState}");
+            result.Append(GetVehicleDetailsBody());
+            
+            return result.ToString();
+        }
+
+        public string GetVehicleDetailsBody()
+        {
+            StringBuilder result = new StringBuilder();
+
+            result.AppendLine("\n--- WHEELS INFORMATION ---");
+            if(m_Wheels != null)
+            {
+                for(int i = 0; i < m_Wheels.Length; ++i)
+                {
+                    result.AppendLine($"Wheel {i + 1}:");
+                    result.AppendLine($"  Manufacturer: {m_Wheels[i].ManufacturerName}");
+                    result.AppendLine($"  Current Air Pressure: {m_Wheels[i].CurrentAirPressure:F2} / {m_Wheels[i].MaxAirPressure:F2} PSI");
+                }
+            }
+
+            result.AppendLine("\n--- ENERGY SOURCE INFORMATION ---");
+            if(m_EnergySource != null)
+            {
+                result.AppendLine($"Energy Level: {m_EnergySource.EnergySourcePercentage:F2}%");
+                result.AppendLine(m_EnergySource.GetSpecificEnergySourceDetails());
+            }
+
+            string specificVehicleDetails = GetSpecificVehicleDetails();
+            if(!string.IsNullOrEmpty(specificVehicleDetails))
+            {
+                result.AppendLine(specificVehicleDetails);
+            }
+
+            return result.ToString();
+        }
+
+        protected abstract string GetSpecificVehicleDetails();
+        public abstract Dictionary<string, string> GetSpecificVehicleQuestions();
     }
 }
