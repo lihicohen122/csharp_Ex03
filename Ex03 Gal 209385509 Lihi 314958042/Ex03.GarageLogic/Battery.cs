@@ -13,13 +13,16 @@ namespace Ex03.GarageLogic
         }
         public override float EnergySourcePercentage
         {
-            get { return (m_RemainingBatteryHoursCapacity / m_MaxBatteryHoursCapacity) * 100; }
+            get
+            {
+                return (m_RemainingBatteryHoursCapacity / m_MaxBatteryHoursCapacity) * 100;
+            }
 
             set
             {
                 if(value < 0 || value > 100)
                 {
-                    throw new ValueRangeException("Battery percentage must be between 0 and 100");
+                    throw new ValueRangeException("setting battery charge parameter", 0, m_MaxBatteryHoursCapacity);
                 }
                 else
                 {

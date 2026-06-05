@@ -59,12 +59,12 @@ namespace Ex03.GarageLogic
             return details.ToString();
         }
 
-        public override Dictionary<string, string> GetSpecificVehicleQuestions()
+        public override List<string> GetSpecificVehicleQuestions()
         {
-            Dictionary<string, string> questions = new Dictionary<string, string>();
+            List<string> questions = new List<string>();
 
-            questions.Add("ColdCargo", "Does the truck deliver refrigerated cargo? (True/False): ");
-            questions.Add("CargoVolume", "Please enter cargo volume (in cubic meters): ");
+            questions.Add("Does the truck deliver refrigerated cargo? (True/False): ");
+            questions.Add("What is the cargo volume (in cubic meters)? ");
 
             return questions;
         }

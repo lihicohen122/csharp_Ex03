@@ -11,21 +11,6 @@ namespace Ex03.GarageLogic
         private readonly Dictionary<string, VehicleOwner> r_Vehicles;
         private Vehicle m_VehicleUnderRegistration;
 
-        private void checkIfValidNonStringValues(bool i_IsEnergySourcePercentageValid, bool i_IsCurrentAirPressureValid)
-        {
-            if(!i_IsEnergySourcePercentageValid && !i_IsCurrentAirPressureValid)
-            {
-                throw new ArgumentException("Invalid energy source percentage and air wheel pressure values");
-            }
-            else if(!i_IsEnergySourcePercentageValid)
-            {
-                throw new ArgumentException("Invalid energy source percentage value");
-            }
-            else if(!i_IsCurrentAirPressureValid)
-            {
-                throw new ArgumentException("Invalid air wheel pressure value");
-            }
-        }
         private Vehicle getVehicleByLicensePlate(string i_LicensePlate)
         {
             if(r_Vehicles.TryGetValue(i_LicensePlate, out VehicleOwner vehicleOwner))
@@ -99,11 +84,6 @@ namespace Ex03.GarageLogic
             {
                 throw new KeyNotFoundException($"The provided license plate '{i_LicensePlate}' was not found in the garage.");
             }
-        }
-        
-        public bool IsValidFuelType(string i_FuelType) // do we need wrapper to encapsulate?
-        {
-            return Enum.TryParse(i_FuelType, out eFuelType newFuelType);
         }
 
         public void FillGasForFuelVehicle(string i_LicensePlate, string i_FuelType, string i_FuelAmountInput)
@@ -201,7 +181,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public Dictionary<string, string> GetQuestionsForCurrentRegistration()
+        public List<string> GetQuestionsForCurrentRegistration()
         {
             if(m_VehicleUnderRegistration == null)
             {
@@ -221,9 +201,9 @@ namespace Ex03.GarageLogic
                 {
                     m_VehicleUnderRegistration.InitializeEnergySource(energy);
                 }
-                catch(Exception ex)
+                catch(Exception exception)
                 {
-                    errorsList.Add(ex.Message);
+                    errorsList.Add(exception.Message);
                 }
             }
             else
@@ -239,9 +219,9 @@ namespace Ex03.GarageLogic
                 {
                     m_VehicleUnderRegistration.InitializeWheels(wheelMaker, air);
                 }
-                catch(Exception ex)
+                catch(Exception exception)
                 {
-                    errorsList.Add(ex.Message);
+                    errorsList.Add(exception.Message);
                 }
             }
             else
@@ -253,9 +233,9 @@ namespace Ex03.GarageLogic
             {
                 m_VehicleUnderRegistration.initializeSpecificVehicleProperties(i_VehicleProperties);
             }
-            catch(Exception ex)
+            catch(Exception exception)
             {
-                errorsList.Add(ex.Message);
+                errorsList.Add(exception.Message);
             }
 
             if(errorsList.Count > 0)
