@@ -32,22 +32,12 @@ namespace Ex03.GarageLogic
         {
             if(m_MaxBatteryHoursCapacity < m_RemainingBatteryHoursCapacity + i_numberOfHoursToAdd)
             {
-                
+                throw new ValueRangeException("battery remaining capacity (in hours)", 0, m_MaxBatteryHoursCapacity);
             }
             else
             {
                 m_RemainingBatteryHoursCapacity += i_numberOfHoursToAdd;
             }
-        }
-
-        public float MaxBatteryHoursCapacity
-        {
-            get { return m_MaxBatteryHoursCapacity; }
-        }
-
-        public float RemainingBatteryHoursCapacity
-        {
-            get { return m_RemainingBatteryHoursCapacity; }
         }
 
         public override string GetSpecificEnergySourceDetails()

@@ -33,7 +33,7 @@ namespace Ex03.GarageLogic
             {
                 if (value < 0 || value > r_MaxAirPressure)
                 {
-                    throw new ValueRangeException("Air pressure must be between 0 and maximum air pressure");
+                    throw new ValueRangeException("wheel air pressure", 0, r_MaxAirPressure);
                 }
                 else
                 {

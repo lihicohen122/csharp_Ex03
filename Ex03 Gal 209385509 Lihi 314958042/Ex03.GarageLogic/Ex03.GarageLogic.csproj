@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Battery.cs" />
     <Compile Include="Car.cs" />
+    <Compile Include="Enums\ePropertyType.cs" />
     <Compile Include="ValueRangeException.cs" />
     <Compile Include="ElectricCar.cs" />
     <Compile Include="ElectricMotorcycle.cs" />

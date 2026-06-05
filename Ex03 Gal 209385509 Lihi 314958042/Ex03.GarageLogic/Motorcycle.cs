@@ -1,6 +1,7 @@
 using System;
-using Ex03.GarageLogic.Enums;
+using System.Collections.Generic;
 using System.Text;
+using Ex03.GarageLogic.Enums;
 
 namespace Ex03.GarageLogic
 {
@@ -45,6 +46,17 @@ namespace Ex03.GarageLogic
             details.AppendLine($"Engine Volume: {m_EngineVolume} cc");
             
             return details.ToString();
+        }
+
+        public override Dictionary<string, string> GetSpecificVehicleQuestions()
+        {
+            Dictionary<string, string> questions = new Dictionary<string, string>();
+            string licenseTypes = string.Join(", ", Enum.GetNames(typeof(eLicenseType)));
+
+            questions.Add("LicenseType", $"Please enter license type ({licenseTypes}): ");
+            questions.Add("EngineVolume", "Please enter engine volume: ");
+
+            return questions;
         }
     }
 }

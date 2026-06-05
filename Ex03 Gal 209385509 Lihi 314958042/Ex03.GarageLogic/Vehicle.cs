@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Ex03.GarageLogic.Enums;
 
@@ -129,9 +130,7 @@ namespace Ex03.GarageLogic
             return result.ToString();
         }
 
-        protected virtual string GetSpecificVehicleDetails()
-        {
-            return string.Empty;
-        }
+        protected abstract string GetSpecificVehicleDetails();
+        public abstract Dictionary<string, string> GetSpecificVehicleQuestions();
     }
 }

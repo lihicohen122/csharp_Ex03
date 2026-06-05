@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    internal class ValueRangeException : Exception
+    public class ValueRangeException : Exception
     {
-        private readonly float m_MinValue;
-        private readonly float m_MaxValue;
-        public ValueRangeException(string message) : base(message)
+        private readonly float r_MinValue;
+        private readonly float r_MaxValue;
+
+        public ValueRangeException(string i_ErrorSubject, float i_MinValue, float i_MaxValue)
+            : base($"Invalid value for {i_ErrorSubject}. The value must be between {i_MinValue} and {i_MaxValue}.")
         {
+            r_MinValue = i_MinValue;
+            r_MaxValue = i_MaxValue;
         }
     }
 }

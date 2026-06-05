@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.Remoting.Lifetime;
 using Ex03.GarageLogic;
+using Ex03.GarageLogic.Enums;
 
 namespace Ex03.ConsoleUI
 {
@@ -29,16 +33,65 @@ namespace Ex03.ConsoleUI
 
         private void enterNewVehicleEntryToGarage()
         {
-            Console.WriteLine("Please enter the license plate of your vehicle: ");
+            Console.WriteLine("Please enter the license plate of your vehicle:");
             string licensePlate = Console.ReadLine();
+
             if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
-                Console.WriteLine($"A vehicle with the license plate {licensePlate} is already in the database!");
+                Console.WriteLine($"A vehicle with license plate '{licensePlate}' is already in the garage. Moving state to 'InRepair'.");
                 m_GarageManager.SetVehicleInRepairByLicensePlate(licensePlate);
             }
             else
             {
-                throw new NotImplementedException();
+                string supportedTypes = string.Join(", ", VehicleCreator.SupportedTypes);
+
+                Console.WriteLine($"Please enter vehicle type ({supportedTypes}):");
+                string vehicleType = Console.ReadLine();
+
+                while(!VehicleCreator.SupportedTypes.Contains(vehicleType))
+                {
+                    Console.WriteLine("Unsupported vehicle type. Please select a valid type from the list:");
+                    vehicleType = Console.ReadLine();
+                }
+
+                Console.WriteLine("Please enter vehicle model name:");
+                string modelName = Console.ReadLine();
+
+                m_GarageManager.BeginNewVehicleRegistration(vehicleType, licensePlate, modelName);
+                string[] vehicleDataArray = new string[10];
+
+                vehicleDataArray[(int)ePropertyType.VehicleType] = vehicleType;
+                vehicleDataArray[(int)ePropertyType.LicensePlate] = licensePlate;
+                vehicleDataArray[(int)ePropertyType.ModelName] = modelName;
+                Console.WriteLine("Please enter owner name:");
+                vehicleDataArray[(int)ePropertyType.OwnerName] = Console.ReadLine();
+                Console.WriteLine("Please enter owner phone number:");
+                vehicleDataArray[(int)ePropertyType.OwnerPhoneNumber] = Console.ReadLine();
+                Console.WriteLine("Please enter current energy percentage:");
+                vehicleDataArray[(int)ePropertyType.EnergySourcePercentage] = Console.ReadLine();
+                Console.WriteLine("Please enter wheels manufacturer name:");
+                vehicleDataArray[(int)ePropertyType.TierModel] = Console.ReadLine();
+                Console.WriteLine("Please enter current wheels air pressure:");
+                vehicleDataArray[(int)ePropertyType.CurrentAirPressure] = Console.ReadLine();
+                Dictionary<string, string> specificQuestions = m_GarageManager.GetQuestionsForCurrentRegistration();
+                int currentIndex = (int)ePropertyType.SpecificProperty1;
+                foreach (string question in specificQuestions.Values)
+                {
+                    Console.WriteLine(question);
+                    vehicleDataArray[currentIndex] = Console.ReadLine();
+                    currentIndex++;
+                }
+
+                try
+                {
+                    m_GarageManager.CommitVehicleRegistration(vehicleDataArray);
+                    Console.WriteLine("Success! New vehicle has been successfully added to the garage.");
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Error: Vehicle was not added to the garage due to the abovementioned reason(s). Please try again.");
+                }
             }
         }
 
@@ -180,6 +233,65 @@ namespace Ex03.ConsoleUI
             else
             {
                 Console.WriteLine($"Error: There is no vehicle with the license plate {licensePlate} in the database.");
+            }
+        }
+
+        private string getValidVehicleType()
+        {
+            string supportedTypes = string.Join(", ", VehicleCreator.SupportedTypes);
+
+            Console.WriteLine($"Please enter vehicle type ({supportedTypes}):");
+            string input = Console.ReadLine();
+
+            while(!VehicleCreator.SupportedTypes.Contains(input))
+            {
+                Console.WriteLine("Unsupported vehicle type. Please select a valid type from the list: ");
+                input = Console.ReadLine();
+            }
+
+            return input;
+        }
+
+        private string[] getFullVehicleDataFromUser(Vehicle i_NewVehicle, string i_VehicleType, string i_LicensePlate, string i_ModelName)
+        {
+            string[] vehicleDataArray = new string[10];
+
+            vehicleDataArray[(int)ePropertyType.VehicleType] = i_VehicleType;
+            vehicleDataArray[(int)ePropertyType.LicensePlate] = i_LicensePlate;
+            vehicleDataArray[(int)ePropertyType.ModelName] = i_ModelName;
+            setGeneralVehicleDataFromUserInput(vehicleDataArray);
+            setSpecificVehicleDataFromUserInput(vehicleDataArray);
+
+            return vehicleDataArray;
+        }
+
+        private void setGeneralVehicleDataFromUserInput(string[] io_VehicleDataArray)
+        {
+            io_VehicleDataArray[(int)ePropertyType.VehicleType] = getValidVehicleType();
+            Console.WriteLine("Please enter vehicle model name:");
+            io_VehicleDataArray[(int)ePropertyType.ModelName] = Console.ReadLine();
+            Console.WriteLine("Please enter owner name:");
+            io_VehicleDataArray[(int)ePropertyType.OwnerName] = Console.ReadLine();
+            Console.WriteLine("Please enter owner phone number:");
+            io_VehicleDataArray[(int)ePropertyType.OwnerPhoneNumber] = Console.ReadLine();
+            Console.WriteLine("Please enter current energy percentage:");
+            io_VehicleDataArray[(int)ePropertyType.EnergySourcePercentage] = Console.ReadLine();
+            Console.WriteLine("Please enter wheels manufacturer name:");
+            io_VehicleDataArray[(int)ePropertyType.TierModel] = Console.ReadLine();
+            Console.WriteLine("Please enter current wheels air pressure:");
+            io_VehicleDataArray[(int)ePropertyType.CurrentAirPressure] = Console.ReadLine();
+        }
+
+        private void setSpecificVehicleDataFromUserInput(string[] io_VehicleDataArray)
+        {
+            Dictionary<string, string> specificQuestions = m_GarageManager.GetQuestionsForCurrentRegistration();
+            int currentPropertyIndex = (int)ePropertyType.SpecificProperty1;
+
+            foreach(string question in specificQuestions.Values)
+            {
+                Console.WriteLine(question);
+                io_VehicleDataArray[currentPropertyIndex] = Console.ReadLine();
+                currentPropertyIndex++;
             }
         }
 

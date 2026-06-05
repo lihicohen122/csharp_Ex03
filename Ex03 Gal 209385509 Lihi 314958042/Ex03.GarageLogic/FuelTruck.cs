@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Ex03.GarageLogic.Enums;
 
@@ -56,6 +57,16 @@ namespace Ex03.GarageLogic
             details.AppendLine($"Cargo Volume: {m_CargoVolume:F2} Cubic Meters");
             
             return details.ToString();
+        }
+
+        public override Dictionary<string, string> GetSpecificVehicleQuestions()
+        {
+            Dictionary<string, string> questions = new Dictionary<string, string>();
+
+            questions.Add("ColdCargo", "Does the truck deliver refrigerated cargo? (True/False): ");
+            questions.Add("CargoVolume", "Please enter cargo volume (in cubic meters): ");
+
+            return questions;
         }
     }
 }
