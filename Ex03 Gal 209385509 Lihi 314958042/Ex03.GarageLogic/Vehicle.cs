@@ -131,6 +131,6 @@ namespace Ex03.GarageLogic
         }
 
         protected abstract string GetSpecificVehicleDetails();
-        public abstract Dictionary<string, string> GetSpecificVehicleQuestions();
+        public abstract List<string> GetSpecificVehicleQuestions();
     }
 }

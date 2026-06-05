@@ -48,13 +48,12 @@ namespace Ex03.GarageLogic
             return details.ToString();
         }
 
-        public override Dictionary<string, string> GetSpecificVehicleQuestions()
+        public override List<string> GetSpecificVehicleQuestions()
         {
-            Dictionary<string, string> questions = new Dictionary<string, string>();
-            string licenseTypes = string.Join(", ", Enum.GetNames(typeof(eLicenseType)));
+            List<string> questions = new List<string>();
 
-            questions.Add("LicenseType", $"Please enter license type ({licenseTypes}): ");
-            questions.Add("EngineVolume", "Please enter engine volume: ");
+            questions.Add($"What is the license type ({string.Join(", ", Enum.GetNames(typeof(eLicenseType)))})? ");
+            questions.Add("What is the engine volume? ");
 
             return questions;
         }

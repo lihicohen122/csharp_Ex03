@@ -12,6 +12,10 @@ namespace Ex03.GarageLogic
             {
                 m_CurrentAirPressure += i_AirAmountToFill;
             }
+            else
+            {
+                throw new ValueRangeException("wheel air pressure", 0, r_MaxAirPressure);
+            }
         }
 
         public Wheel(string i_ManufacturerName, float i_CurrentAirPressure, float i_MaxAirPressure)

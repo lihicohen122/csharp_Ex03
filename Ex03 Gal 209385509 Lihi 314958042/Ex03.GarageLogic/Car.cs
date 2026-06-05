@@ -46,11 +46,13 @@ namespace Ex03.GarageLogic
             return details.ToString();
         }
 
-        public override Dictionary<string, string> GetSpecificVehicleQuestions()
+        public override List<string> GetSpecificVehicleQuestions()
         {
-            Dictionary<string, string> questions = new Dictionary<string, string>();
-            questions.Add("CarColor", $"Please enter car color ({string.Join(", ", Enum.GetNames(typeof(eCarColor)))}):");
-            questions.Add("NumberOfDoors", $"Please enter number of doors ({string.Join(", ", Enum.GetNames(typeof(eNumberOfCarDoors)))}):");
+            List<string> questions = new List<string>();
+
+            questions.Add($"What is the car's color ({string.Join(", ", Enum.GetNames(typeof(eCarColor)))})? ");
+            questions.Add($"How many doors does the car have ({string.Join(", ", Enum.GetNames(typeof(eNumberOfCarDoors)))})? ");
+
             return questions;
         }
     }
