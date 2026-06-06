@@ -28,7 +28,7 @@ namespace Ex03.GarageLogic
 
             if(!Enum.TryParse(i_VehicleProperties[k_NumberOfDoorsIndex], out m_NumberOfDoors))
             {
-                errorsList.Add($"Invalid number of doors. Expected one of: {string.Join(", ", Enum.GetValues(typeof(eNumberOfCarDoors)))}");
+                errorsList.Add($"Invalid number of doors. Expected one of: {string.Join(", ", Enum.GetNames(typeof(eNumberOfCarDoors)))}");
             }
 
             if(errorsList.Count > 0)
