@@ -113,9 +113,13 @@ namespace Ex03.ConsoleUI
                     Console.WriteLine($"Error: {exception.Message}");
                 }
             }
-            else
+            else if(filterAnswer == "No")
             {
                 Console.WriteLine($"All license plates in the garage: {m_GarageManager.DisplayAllLicensePlates()}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please answer 'Yes' or 'No'.");
             }
         }
 
