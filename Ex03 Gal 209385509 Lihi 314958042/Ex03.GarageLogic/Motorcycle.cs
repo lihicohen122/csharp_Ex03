@@ -14,17 +14,26 @@ namespace Ex03.GarageLogic
 
         public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
+            List<string> errorsList = new List<string>();
+
             if(i_VehicleProperties.Length != k_ExpectedPropertiesCount)
             {
-                 throw new ArgumentException($"Invalid number of properties. Expected: {k_ExpectedPropertiesCount}");
+                throw new ArgumentException($"Invalid number of properties. Expected: {k_ExpectedPropertiesCount}");
             }
+
             if(!Enum.TryParse(i_VehicleProperties[k_LicenseTypeIndex], out m_LicenseType))
             {
-                throw new ArgumentException($"Invalid license type. Expected one of: {string.Join(", ", Enum.GetNames(typeof(eLicenseType)))}");
+                errorsList.Add($"Invalid license type. Expected one of: {string.Join(", ", Enum.GetNames(typeof(eLicenseType)))}");
             }
+
             if(!int.TryParse(i_VehicleProperties[k_EngineVolumeIndex], out m_EngineVolume) || m_EngineVolume < 0)
             {
-                throw new ArgumentException("Invalid engine volume. Expected a positive integer.");
+                errorsList.Add("Invalid engine volume. Expected a positive integer.");
+            }
+
+            if(errorsList.Count > 0)
+            {
+                throw new ArgumentException(string.Join("\n", errorsList));
             }
         }
 

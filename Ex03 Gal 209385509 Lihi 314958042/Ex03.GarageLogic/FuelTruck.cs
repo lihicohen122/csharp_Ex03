@@ -25,17 +25,26 @@ namespace Ex03.GarageLogic
 
         public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
-            if (i_VehicleProperties.Length != k_ExpectedPropertiesCount)
+            List<string> errorsList = new List<string>();
+
+            if(i_VehicleProperties.Length != k_ExpectedPropertiesCount)
             {
                 throw new ArgumentException($"Invalid number of properties. Expected: {k_ExpectedPropertiesCount}");
             }
-            if (!bool.TryParse(i_VehicleProperties[k_CanDeliverColdCargoIndex], out m_CanDeliverColdCargo))
+
+            if(!bool.TryParse(i_VehicleProperties[k_CanDeliverColdCargoIndex], out m_CanDeliverColdCargo))
             {
-                throw new ArgumentException("Invalid value for can deliver cold cargo. Expected a boolean value.");
+                errorsList.Add("Invalid value for can deliver cold cargo. Expected 'True' or 'False'.");
             }
-            if (!float.TryParse(i_VehicleProperties[k_CargoVolumeIndex], out m_CargoVolume) || m_CargoVolume <= 0)
+
+            if(!float.TryParse(i_VehicleProperties[k_CargoVolumeIndex], out m_CargoVolume) || m_CargoVolume <= 0)
             {
-                throw new ArgumentException("Invalid value for cargo volume. Expected a positive floating-point number.");
+                errorsList.Add("Invalid value for cargo volume. Expected a positive real number.");
+            }
+
+            if(errorsList.Count > 0)
+            {
+                throw new ArgumentException(string.Join("\n", errorsList));
             }
         }
 

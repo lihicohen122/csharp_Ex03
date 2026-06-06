@@ -14,17 +14,26 @@ namespace Ex03.GarageLogic
 
         public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
-            if (i_VehicleProperties.Length != k_ExpectedPropertiesCount)
+            List<string> errorsList = new List<string>();
+
+            if(i_VehicleProperties.Length != k_ExpectedPropertiesCount)
             {
                 throw new ArgumentException($"Invalid number of properties. Expected: {k_ExpectedPropertiesCount}");
             }
-            if (!Enum.TryParse(i_VehicleProperties[k_CarColorIndex], out m_CarColor))
+
+            if(!Enum.TryParse(i_VehicleProperties[k_CarColorIndex], out m_CarColor))
             {
-                throw new ArgumentException($"Invalid car color. Expected one of: {string.Join(", ", Enum.GetNames(typeof(eCarColor)))}");
+                errorsList.Add($"Invalid car color. Expected one of: {string.Join(", ", Enum.GetNames(typeof(eCarColor)))}");
             }
-            if (!Enum.TryParse(i_VehicleProperties[k_NumberOfDoorsIndex], out m_NumberOfDoors))
+
+            if(!Enum.TryParse(i_VehicleProperties[k_NumberOfDoorsIndex], out m_NumberOfDoors))
             {
-                throw new ArgumentException($"Invalid number of doors. Expected one of: {string.Join(", ", Enum.GetValues(typeof(eNumberOfCarDoors)))}");
+                errorsList.Add($"Invalid number of doors. Expected one of: {string.Join(", ", Enum.GetValues(typeof(eNumberOfCarDoors)))}");
+            }
+
+            if(errorsList.Count > 0)
+            {
+                throw new ArgumentException(string.Join("\n", errorsList));
             }
         }
 
