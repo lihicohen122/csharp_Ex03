@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Ex03.GarageLogic.Enums;
 
 namespace Ex03.GarageLogic
@@ -33,18 +34,24 @@ namespace Ex03.GarageLogic
 
         public void addFuelIfPossible(float i_AmountToAdd, eFuelType i_FuelType)
         {
-            if(r_MaxAmountOfFuel < m_CurrentAmountOfFuel + i_AmountToAdd || i_AmountToAdd < 0)
+            List<string> errorsList = new List<string>();
+
+            if(i_AmountToAdd < 0 || r_MaxAmountOfFuel < m_CurrentAmountOfFuel + i_AmountToAdd)
             {
-                throw new ValueRangeException("fuel filling", 0, r_MaxAmountOfFuel);
+                errorsList.Add($"Invalid value for fuel filling. The value must be between 0 and {r_MaxAmountOfFuel}.");
             }
-            else if(r_FuelType != i_FuelType)
+
+            if(r_FuelType != i_FuelType)
             {
-                throw new ArgumentException("Incorrect fuel type");
+                errorsList.Add($"Incorrect fuel type. Expected {r_FuelType}.");
             }
-            else
+
+            if(errorsList.Count > 0)
             {
-                m_CurrentAmountOfFuel += i_AmountToAdd;
+                throw new ArgumentException(string.Join("\n", errorsList));
             }
+
+            m_CurrentAmountOfFuel += i_AmountToAdd;
         }
 
         public override string GetSpecificEnergySourceDetails()
