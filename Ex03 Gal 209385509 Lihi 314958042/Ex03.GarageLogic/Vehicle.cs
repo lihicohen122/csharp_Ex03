@@ -39,7 +39,7 @@ namespace Ex03.GarageLogic
 
         protected abstract EnergySource CreateEnergySource();
 
-        public abstract void initializeSpecificVehicleProperties(string[] i_VehicleProperties);
+        public abstract void InitializeSpecificVehicleProperties(string[] i_VehicleProperties);
 
         public void InitializeWheels(string i_ManufacturerName, float i_CurrentAirPressure)
         {

@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
         protected eLicenseType m_LicenseType;
         protected int m_EngineVolume;
 
-        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
+        public override void InitializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
             List<string> errorsList = new List<string>();
 

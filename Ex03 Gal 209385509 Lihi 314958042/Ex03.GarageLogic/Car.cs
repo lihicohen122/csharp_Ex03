@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
         protected eCarColor m_CarColor;
         protected eNumberOfCarDoors m_NumberOfDoors;
 
-        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
+        public override void InitializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
             List<string> errorsList = new List<string>();
 

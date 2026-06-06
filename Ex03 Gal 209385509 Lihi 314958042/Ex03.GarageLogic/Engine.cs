@@ -16,19 +16,19 @@ namespace Ex03.GarageLogic
             r_MaxAmountOfFuel = i_MaxAmountOfFuel;
             m_CurrentAmountOfFuel = 0;
         }
+
         public override float EnergySourcePercentage
         {
             get { return (m_CurrentAmountOfFuel / r_MaxAmountOfFuel) * 100; }
+
             set
             {
                 if(value < 0 || value > 100)
                 {
                     throw new ValueRangeException("setting fuel parameter", 0, 100);
                 }
-                else
-                {
-                    m_CurrentAmountOfFuel = (value * r_MaxAmountOfFuel) / 100;
-                }
+
+                m_CurrentAmountOfFuel = (value * r_MaxAmountOfFuel) / 100;
             }
         }
 

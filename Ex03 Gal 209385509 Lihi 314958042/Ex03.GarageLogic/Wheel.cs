@@ -38,10 +38,8 @@ namespace Ex03.GarageLogic
                 {
                     throw new ValueRangeException("wheel air pressure", 0, r_MaxAirPressure);
                 }
-                else
-                {
-                    m_CurrentAirPressure = value;
-                }
+
+                m_CurrentAirPressure = value;
             }
         }
 

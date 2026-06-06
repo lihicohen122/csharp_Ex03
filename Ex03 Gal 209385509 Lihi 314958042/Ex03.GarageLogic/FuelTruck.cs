@@ -9,6 +9,8 @@ namespace Ex03.GarageLogic
     {
         private const int k_CanDeliverColdCargoIndex = 8;
         private const int k_CargoVolumeIndex = 9;
+        private const int k_NumberOfWheels = 14;
+        private const float k_MaxAirPressure = 28f;
         private bool m_CanDeliverColdCargo;
         private float m_CargoVolume;
 
@@ -23,7 +25,7 @@ namespace Ex03.GarageLogic
             m_ModelName = i_ModelName;
         }
 
-        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
+        public override void InitializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
             List<string> errorsList = new List<string>();
 
@@ -50,12 +52,12 @@ namespace Ex03.GarageLogic
 
         protected override int NumOfWheels
         {
-            get { return 14; }
+            get { return k_NumberOfWheels; }
         }
 
         protected override float MaxAirPressure
         {
-            get { return 28f; }
+            get { return k_MaxAirPressure; }
         }
 
         protected override string GetSpecificVehicleDetails()

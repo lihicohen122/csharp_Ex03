@@ -20,13 +20,74 @@ namespace Ex03.GarageLogic
             throw new KeyNotFoundException($"The provided license plate '{i_LicensePlate}' was not found in the garage.");
         }
 
+        private void parseAndInitializeWheels(string[] i_VehicleProperties, List<string> i_ErrorsList)
+        {
+            if (float.TryParse(i_VehicleProperties[(int)ePropertyType.CurrentAirPressure], out float air))
+            {
+                string wheelMaker = i_VehicleProperties[(int)ePropertyType.TierModel];
+                try
+                {
+                    m_VehicleUnderRegistration.InitializeWheels(wheelMaker, air);
+                }
+                catch (Exception exception)
+                {
+                    i_ErrorsList.Add(exception.Message);
+                }
+            }
+            else
+            {
+                i_ErrorsList.Add("Invalid air pressure format. Must be a number.");
+            }
+        }
+
+        private void parseSpecificVehicleProperties(string[] i_VehicleProperties, List<string> i_ErrorsList)
+        {
+            try
+            {
+                m_VehicleUnderRegistration.InitializeSpecificVehicleProperties(i_VehicleProperties);
+            }
+            catch (Exception exception)
+            {
+                i_ErrorsList.Add(exception.Message);
+            }
+        }
+
+        private void finalizeVehicleRegistration(string[] i_VehicleProperties)
+        {
+            string ownerName = i_VehicleProperties[(int)ePropertyType.OwnerName];
+            string ownerPhone = i_VehicleProperties[(int)ePropertyType.OwnerPhoneNumber];
+            VehicleOwner owner = new VehicleOwner(ownerName, ownerPhone, m_VehicleUnderRegistration);
+
+            r_Vehicles.Add(m_VehicleUnderRegistration.LicenseId, owner);
+            m_VehicleUnderRegistration = null;
+        }
+
+        private void parseAndInitializeEnergySource(string[] i_VehicleProperties, List<string> i_ErrorsList)
+        {
+            if (float.TryParse(i_VehicleProperties[(int)ePropertyType.EnergySourcePercentage], out float energy))
+            {
+                try
+                {
+                    m_VehicleUnderRegistration.InitializeEnergySource(energy);
+                }
+                catch (Exception exception)
+                {
+                    i_ErrorsList.Add(exception.Message);
+                }
+            }
+            else
+            {
+                i_ErrorsList.Add("Invalid energy percentage format. Must be a number.");
+            }
+        }
+
         public GarageManager()
         {
             r_Vehicles = new Dictionary<string, VehicleOwner>();
             m_VehicleUnderRegistration = null;
         }
 
-        public void LoadDatafromDatabaseFile()
+        public void LoadDataFromDatabaseFile()
         {
             string[] fileContentLines = System.IO.File.ReadAllLines(k_DatabaseFileName);
 
@@ -125,7 +186,7 @@ namespace Ex03.GarageLogic
                 throw new FormatException($"The vehicle with license plate '{i_LicensePlate}' is not fuel based and therefore cannot be filled with fuel.");
             }
 
-            vehicleBattery.addHoursToBatteryCapacityIfPossible(hoursToLoadBattery);
+            vehicleBattery.AddHoursToBatteryCapacityIfPossible(hoursToLoadBattery);
         }
 
         public string DisplayAllLicensePlatesFilteredByState(string i_VehicleState)
@@ -166,10 +227,8 @@ namespace Ex03.GarageLogic
 
                 return result.ToString();
             }
-            else
-            {
-                throw new KeyNotFoundException($"The provided license plate '{i_LicensePlate}' was not found in the garage.");
-            }
+
+            throw new KeyNotFoundException($"The provided license plate '{i_LicensePlate}' was not found in the garage.");
         }
 
         public void BeginNewVehicleRegistration(string i_VehicleType, string i_LicensePlate, string i_ModelName)
@@ -195,61 +254,17 @@ namespace Ex03.GarageLogic
         {
             List<string> errorsList = new List<string>();
 
-            if(float.TryParse(i_VehicleProperties[(int)ePropertyType.EnergySourcePercentage], out float energy))
-            {
-                try
-                {
-                    m_VehicleUnderRegistration.InitializeEnergySource(energy);
-                }
-                catch(Exception exception)
-                {
-                    errorsList.Add(exception.Message);
-                }
-            }
-            else
-            {
-                errorsList.Add("Invalid energy percentage format. Must be a number.");
-            }
+            parseAndInitializeEnergySource(i_VehicleProperties, errorsList);
+            parseAndInitializeWheels(i_VehicleProperties, errorsList);
+            parseSpecificVehicleProperties(i_VehicleProperties, errorsList);
 
-            if(float.TryParse(i_VehicleProperties[(int)ePropertyType.CurrentAirPressure], out float air))
-            {
-                string wheelMaker = i_VehicleProperties[(int)ePropertyType.TierModel];
-
-                try
-                {
-                    m_VehicleUnderRegistration.InitializeWheels(wheelMaker, air);
-                }
-                catch(Exception exception)
-                {
-                    errorsList.Add(exception.Message);
-                }
-            }
-            else
-            {
-                errorsList.Add("Invalid air pressure format. Must be a number.");
-            }
-
-            try
-            {
-                m_VehicleUnderRegistration.initializeSpecificVehicleProperties(i_VehicleProperties);
-            }
-            catch(Exception exception)
-            {
-                errorsList.Add(exception.Message);
-            }
-
-            if(errorsList.Count > 0)
+            if (errorsList.Count > 0)
             {
                 m_VehicleUnderRegistration = null;
                 throw new ArgumentException(string.Join("\n", errorsList));
             }
 
-            string ownerName = i_VehicleProperties[(int)ePropertyType.OwnerName];
-            string ownerPhone = i_VehicleProperties[(int)ePropertyType.OwnerPhoneNumber];
-            VehicleOwner owner = new VehicleOwner(ownerName, ownerPhone, m_VehicleUnderRegistration);
-
-            r_Vehicles.Add(m_VehicleUnderRegistration.LicenseId, owner);
-            m_VehicleUnderRegistration = null;
+            finalizeVehicleRegistration(i_VehicleProperties);
         }
     }
 }

@@ -8,19 +8,19 @@ namespace Ex03.ConsoleUI
     internal class GarageConsoleUI
     {
         private const int k_QuitOption = 10;
-        private Menu m_garageUIMenu;
-        private GarageManager m_GarageManager;
+        private Menu m_GarageUIMenu;
+        private readonly GarageManager r_GarageManager;
 
         private void printWelcomingUserMessage()
         {
             Console.WriteLine("Welcome to Gal and Lihi's garage system!");
         }
 
-        private void loadDatafromDatabaseFile()
+        private void loadDataFromDatabaseFile()
         {
             try
             {
-                m_GarageManager.LoadDatafromDatabaseFile();
+                r_GarageManager.LoadDataFromDatabaseFile();
                 Console.WriteLine("Data loaded successfully!");
             }
             catch (Exception exception)
@@ -34,62 +34,90 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
 
-            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
+            if (r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
-                Console.WriteLine($"A vehicle with license plate '{licensePlate}' is already in the garage. Moving state to 'InRepair'.");
-                m_GarageManager.SetVehicleInRepairByLicensePlate(licensePlate);
+                handleExistingVehicle(licensePlate);
             }
             else
             {
-                string supportedTypes = string.Join(", ", VehicleCreator.SupportedTypes);
+                handleNewVehicleRegistration(licensePlate);
+            }
+        }
 
-                Console.WriteLine($"What is the vehicle type? ({supportedTypes}): ");
-                string vehicleType = Console.ReadLine();
+        private void handleExistingVehicle(string i_LicensePlate)
+        {
+            Console.WriteLine($"A vehicle with license plate '{i_LicensePlate}' is already in the garage. Moving state to 'InRepair'.");
+            r_GarageManager.SetVehicleInRepairByLicensePlate(i_LicensePlate);
+        }
 
-                while(!VehicleCreator.SupportedTypes.Contains(vehicleType))
-                {
-                    Console.WriteLine("Unsupported vehicle type. Please select a valid type from the list:");
-                    vehicleType = Console.ReadLine();
-                }
+        private void handleNewVehicleRegistration(string i_LicensePlate)
+        {
+            string vehicleType = getValidVehicleType();
 
-                Console.WriteLine("What is the vehicle's model name? ");
-                string modelName = Console.ReadLine();
+            Console.WriteLine("What is the vehicle's model name? ");
+            string modelName = Console.ReadLine();
 
-                m_GarageManager.BeginNewVehicleRegistration(vehicleType, licensePlate, modelName);
-                string[] vehicleDataArray = new string[10];
+            r_GarageManager.BeginNewVehicleRegistration(vehicleType, i_LicensePlate, modelName);
+            string[] vehicleDataArray = new string[10];
 
-                vehicleDataArray[(int)ePropertyType.VehicleType] = vehicleType;
-                vehicleDataArray[(int)ePropertyType.LicensePlate] = licensePlate;
-                vehicleDataArray[(int)ePropertyType.ModelName] = modelName;
-                Console.WriteLine("Who is the owner of the vehicle? ");
-                vehicleDataArray[(int)ePropertyType.OwnerName] = Console.ReadLine();
-                Console.WriteLine("What is the owner's phone number? ");
-                vehicleDataArray[(int)ePropertyType.OwnerPhoneNumber] = Console.ReadLine();
-                Console.WriteLine("What is the current energy percentage (0-100)? ");
-                vehicleDataArray[(int)ePropertyType.EnergySourcePercentage] = Console.ReadLine();
-                Console.WriteLine("Who is the manufacturer of the wheels?");
-                vehicleDataArray[(int)ePropertyType.TierModel] = Console.ReadLine();
-                Console.WriteLine("What is the current wheels air pressure?");
-                vehicleDataArray[(int)ePropertyType.CurrentAirPressure] = Console.ReadLine();
-                List<string> specificQuestions = m_GarageManager.GetQuestionsForCurrentRegistration();
-                int currentIndex = (int)ePropertyType.SpecificProperty1;
-                foreach (string question in specificQuestions)
-                {
-                    Console.WriteLine(question);
-                    vehicleDataArray[currentIndex] = Console.ReadLine();
-                    currentIndex++;
-                }
+            collectBasicVehicleInfo(vehicleDataArray, vehicleType, i_LicensePlate, modelName);
+            collectSpecificVehicleInfo(vehicleDataArray);
 
-                try
-                {
-                    m_GarageManager.CommitVehicleRegistration(vehicleDataArray);
-                    Console.WriteLine("Success! New vehicle has been successfully added to the garage.");
-                }
-                catch (ArgumentException exception)
-                {
-                    Console.WriteLine(exception.Message);
-                    Console.WriteLine("Error: Vehicle was not added to the garage due to the abovementioned reason(s). Please try again.");
-                }
+            try
+            {
+                r_GarageManager.CommitVehicleRegistration(vehicleDataArray);
+                Console.WriteLine("Success! New vehicle has been successfully added to the garage.");
+            }
+            catch (ArgumentException exception)
+            {
+                Console.WriteLine(exception.Message);
+                Console.WriteLine("Error: Vehicle was not added to the garage due to the abovementioned reason(s). Please try again.");
+            }
+        }
+
+        private string getValidVehicleType()
+        {
+            string supportedTypes = string.Join(", ", VehicleCreator.SupportedTypes);
+            Console.WriteLine($"What is the vehicle type? ({supportedTypes}): ");
+            string vehicleType = Console.ReadLine();
+
+            while (!VehicleCreator.SupportedTypes.Contains(vehicleType))
+            {
+                Console.WriteLine("Unsupported vehicle type. Please select a valid type from the list:");
+                vehicleType = Console.ReadLine();
+            }
+
+            return vehicleType;
+        }
+
+        private void collectBasicVehicleInfo(string[] i_DataArray, string i_Type, string i_License, string i_Model)
+        {
+            i_DataArray[(int)ePropertyType.VehicleType] = i_Type;
+            i_DataArray[(int)ePropertyType.LicensePlate] = i_License;
+            i_DataArray[(int)ePropertyType.ModelName] = i_Model;
+
+            Console.WriteLine("Who is the owner of the vehicle? ");
+            i_DataArray[(int)ePropertyType.OwnerName] = Console.ReadLine();
+            Console.WriteLine("What is the owner's phone number? ");
+            i_DataArray[(int)ePropertyType.OwnerPhoneNumber] = Console.ReadLine();
+            Console.WriteLine("What is the current energy percentage (0-100)? ");
+            i_DataArray[(int)ePropertyType.EnergySourcePercentage] = Console.ReadLine();
+            Console.WriteLine("Who is the manufacturer of the wheels?");
+            i_DataArray[(int)ePropertyType.TierModel] = Console.ReadLine();
+            Console.WriteLine("What is the current wheels air pressure?");
+            i_DataArray[(int)ePropertyType.CurrentAirPressure] = Console.ReadLine();
+        }
+
+        private void collectSpecificVehicleInfo(string[] i_DataArray)
+        {
+            List<string> specificQuestions = r_GarageManager.GetQuestionsForCurrentRegistration();
+            int currentIndex = (int)ePropertyType.SpecificProperty1;
+
+            foreach (string question in specificQuestions)
+            {
+                Console.WriteLine(question);
+                i_DataArray[currentIndex] = Console.ReadLine();
+                currentIndex++;
             }
         }
 
@@ -100,13 +128,13 @@ namespace Ex03.ConsoleUI
             
             if(filterAnswer == "Yes")
             {
-                Console.WriteLine($"Available states: {m_GarageManager.GetAvailableVehicleStates()}");
+                Console.WriteLine($"Available states: {r_GarageManager.GetAvailableVehicleStates()}");
                 Console.WriteLine("Which vehicle state would you like to filter by? ");
                 string vehicleState = Console.ReadLine();
                 
                 try
                 {
-                    Console.WriteLine($"Vehicles in the garage with state '{vehicleState}': {m_GarageManager.DisplayAllLicensePlatesFilteredByState(vehicleState)}");
+                    Console.WriteLine($"Vehicles in the garage with state '{vehicleState}': {r_GarageManager.DisplayAllLicensePlatesFilteredByState(vehicleState)}");
                 }
                 catch(Exception exception)
                 {
@@ -115,7 +143,7 @@ namespace Ex03.ConsoleUI
             }
             else if(filterAnswer == "No")
             {
-                Console.WriteLine($"All license plates in the garage: {m_GarageManager.DisplayAllLicensePlates()}");
+                Console.WriteLine($"All license plates in the garage: {r_GarageManager.DisplayAllLicensePlates()}");
             }
             else
             {
@@ -127,14 +155,15 @@ namespace Ex03.ConsoleUI
         {
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
-            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
+
+            if(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine($"What is the requested new vehicle state for the vehicle with the license plate '{licensePlate}' in the garage ('InRepair', 'Repaired' or 'Paid'): ");
                 string newVehicleState = Console.ReadLine();
                 
                 try
                 {
-                    m_GarageManager.SetVehicleState(licensePlate, newVehicleState);
+                    r_GarageManager.SetVehicleState(licensePlate, newVehicleState);
                     Console.WriteLine($"Success! The vehicle state for the vehicle with license plate '{licensePlate}' has been updated to '{newVehicleState}'!");
                 }
                 catch (Exception exception)
@@ -155,7 +184,7 @@ namespace Ex03.ConsoleUI
 
             try
             {
-                m_GarageManager.InflateAllWheelsOfVehicleByLicensePlate(licensePlate);
+                r_GarageManager.InflateAllWheelsOfVehicleByLicensePlate(licensePlate);
                 Console.WriteLine($"Success! All wheels in vehicle with license plate '{licensePlate}' are inflated to their maximum pressure!");
             }
             catch(Exception exception)
@@ -169,7 +198,7 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
             
-            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
+            if(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine("What type of fuel would you like to fill? (Soler, Octan95, Octan96, Octan98): ");
                 string fuelType = Console.ReadLine();
@@ -179,7 +208,7 @@ namespace Ex03.ConsoleUI
 
                 try
                 {
-                    m_GarageManager.FillGasForFuelVehicle(licensePlate, fuelType, fuelAmountInput);
+                    r_GarageManager.FillGasForFuelVehicle(licensePlate, fuelType, fuelAmountInput);
                     Console.WriteLine($"Success! Vehicle '{licensePlate}' was successfully fueled.");
                 }
                 catch(Exception exception)
@@ -198,13 +227,14 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
             
-            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
+            if(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine("How many minutes should we charge the vehicle's battery?");
                 string minutesToLoadBatteryWithUserUnput = Console.ReadLine();
+
                 try
                 {
-                    m_GarageManager.ChargeBatteryForElectricVehicle(licensePlate, minutesToLoadBatteryWithUserUnput);
+                    r_GarageManager.ChargeBatteryForElectricVehicle(licensePlate, minutesToLoadBatteryWithUserUnput);
                     Console.WriteLine($"Success! Vehicle '{licensePlate}' was successfully charged.");
                 }
                 catch(Exception exception)
@@ -223,9 +253,9 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
             
-            if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
+            if(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
-                Console.WriteLine(m_GarageManager.GetFullVehicleProperties(licensePlate));
+                Console.WriteLine(r_GarageManager.GetFullVehicleProperties(licensePlate));
             }
             else
             {
@@ -235,8 +265,8 @@ namespace Ex03.ConsoleUI
 
         public GarageConsoleUI()
         {
-            m_garageUIMenu = new Menu();
-            m_GarageManager = new GarageManager();
+            m_GarageUIMenu = new Menu();
+            r_GarageManager = new GarageManager();
         }
 
         public void RunApp()
@@ -246,7 +276,7 @@ namespace Ex03.ConsoleUI
             printWelcomingUserMessage();
             while(userOption != k_QuitOption)
             {
-                m_garageUIMenu.PrintMenu();
+                m_GarageUIMenu.PrintMenu();
                 string userInput = Console.ReadLine();
                 bool isValidUserOption = int.TryParse(userInput, out userOption);
 
@@ -260,7 +290,7 @@ namespace Ex03.ConsoleUI
                 switch (userOption)
                 {
                     case 1:
-                        loadDatafromDatabaseFile();
+                        loadDataFromDatabaseFile();
                         break;
                     case 2:
                         enterNewVehicleEntryToGarage();
