@@ -14,7 +14,7 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("6. Fill fuel for a fuel-based vehicle in the garage");
             Console.WriteLine("7. Charge battery for an electric vehicle in the garage");
             Console.WriteLine("8. Present full vehicle data of a vehicle in the garage");
-            Console.WriteLine("10. Quit");
+            Console.WriteLine("9. Quit");
         }
     }
 }

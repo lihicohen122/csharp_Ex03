@@ -7,7 +7,7 @@ namespace Ex03.ConsoleUI
 {
     internal class GarageConsoleUI
     {
-        private const int k_QuitOption = 10;
+        private const int k_QuitOption = 9;
         private readonly Menu r_GarageUIMenu;
         private readonly GarageManager r_GarageManager;
 
@@ -20,7 +20,7 @@ namespace Ex03.ConsoleUI
         {
             try
             {
-                r_GarageManager.LoadDatafromDatabaseFile();
+                r_GarageManager.LoadDataFromDatabaseFile();
                 Console.WriteLine("Data loaded successfully!");
             }
             catch(Exception exception)
@@ -313,8 +313,8 @@ namespace Ex03.ConsoleUI
                     case 8:
                         printFullVehicleDataOfVehicleInGarage();
                         break;
-                    default:
-                        Console.WriteLine($"Invalid option. Please enter a valid option number (1-{k_QuitOption}).");
+                    case 9:
+                        Console.WriteLine("Thank you for using Gal and Lihi's garage system! Goodbye!");
                         break;
                 }
             }
