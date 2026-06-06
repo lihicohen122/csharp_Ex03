@@ -129,10 +129,9 @@ namespace Ex03.ConsoleUI
             string licensePlate = Console.ReadLine();
             if(m_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
-                Console.WriteLine($"What is the requested new vehicle state for the vehicle with the license plate '{licensePlate}' in the garage ('In Repair', 'Repaired' or 'Paid'): ");
+                Console.WriteLine($"What is the requested new vehicle state for the vehicle with the license plate '{licensePlate}' in the garage ('InRepair', 'Repaired' or 'Paid'): ");
                 string newVehicleState = Console.ReadLine();
-
-                newVehicleState = newVehicleState?.Replace(" ", string.Empty);
+                
                 try
                 {
                     m_GarageManager.SetVehicleState(licensePlate, newVehicleState);
