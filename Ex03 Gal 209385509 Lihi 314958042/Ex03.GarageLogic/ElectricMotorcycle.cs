@@ -14,10 +14,5 @@ namespace Ex03.GarageLogic
         {
             return new Battery(3f);
         }
-
-        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
