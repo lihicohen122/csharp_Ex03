@@ -26,9 +26,10 @@ namespace Ex03.GarageLogic
         public void InitializeWheels(string i_ManufacturerName, float i_CurrentAirPressure)
         {
             m_Wheels = new Wheel[NumOfWheels];
-            for (int i = 0; i < NumOfWheels; ++i)
+            for(int i = 0; i < NumOfWheels; ++i)
             {
-                m_Wheels[i] = new Wheel(i_ManufacturerName, i_CurrentAirPressure, MaxAirPressure);
+                m_Wheels[i] = new Wheel(i_ManufacturerName, MaxAirPressure);
+                m_Wheels[i].CurrentAirPressure = i_CurrentAirPressure;
             }
         }
 

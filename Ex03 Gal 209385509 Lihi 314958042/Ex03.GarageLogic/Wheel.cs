@@ -18,10 +18,9 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public Wheel(string i_ManufacturerName, float i_CurrentAirPressure, float i_MaxAirPressure)
+        public Wheel(string i_ManufacturerName, float i_MaxAirPressure)
         {
             r_ManufacturerName = i_ManufacturerName;
-            m_CurrentAirPressure = i_CurrentAirPressure;
             r_MaxAirPressure = i_MaxAirPressure;
         }
 
