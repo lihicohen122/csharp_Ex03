@@ -78,10 +78,11 @@ namespace Ex03.ConsoleUI
         private string getValidVehicleType()
         {
             string supportedTypes = string.Join(", ", VehicleCreator.SupportedTypes);
+
             Console.WriteLine($"What is the vehicle type? ({supportedTypes}): ");
             string vehicleType = Console.ReadLine();
 
-            while (!VehicleCreator.SupportedTypes.Contains(vehicleType))
+            while(!VehicleCreator.SupportedTypes.Contains(vehicleType))
             {
                 Console.WriteLine("Unsupported vehicle type. Please select a valid type from the list:");
                 vehicleType = Console.ReadLine();
@@ -95,7 +96,6 @@ namespace Ex03.ConsoleUI
             i_DataArray[(int)ePropertyType.VehicleType] = i_Type;
             i_DataArray[(int)ePropertyType.LicensePlate] = i_License;
             i_DataArray[(int)ePropertyType.ModelName] = i_Model;
-
             Console.WriteLine("Who is the owner of the vehicle? ");
             i_DataArray[(int)ePropertyType.OwnerName] = Console.ReadLine();
             Console.WriteLine("What is the owner's phone number? ");
@@ -113,7 +113,7 @@ namespace Ex03.ConsoleUI
             List<string> specificQuestions = r_GarageManager.GetQuestionsForCurrentRegistration();
             int currentIndex = (int)ePropertyType.SpecificProperty1;
 
-            foreach (string question in specificQuestions)
+            foreach(string question in specificQuestions)
             {
                 Console.WriteLine(question);
                 i_DataArray[currentIndex] = Console.ReadLine();
@@ -280,14 +280,14 @@ namespace Ex03.ConsoleUI
                 string userInput = Console.ReadLine();
                 bool isValidUserOption = int.TryParse(userInput, out userOption);
 
-                while (!isValidUserOption || userOption < 1 || userOption > k_QuitOption)
+                while(!isValidUserOption || userOption < 1 || userOption > k_QuitOption)
                 {
                     Console.WriteLine("Invalid option number. Please enter a valid option.");
                     userInput = Console.ReadLine();
                     isValidUserOption = int.TryParse(userInput, out userOption);
                 }
 
-                switch (userOption)
+                switch(userOption)
                 {
                     case 1:
                         loadDataFromDatabaseFile();
