@@ -1,21 +1,21 @@
-using System;
 namespace Ex03.GarageLogic
 {
     public class Battery : EnergySource
     {
-        private readonly float m_MaxBatteryHoursCapacity;
+        private readonly float r_MaxBatteryHoursCapacity;
         private float m_RemainingBatteryHoursCapacity;
 
         public Battery(float i_MaxBatteryHoursCapacity)
         {
-            m_MaxBatteryHoursCapacity = i_MaxBatteryHoursCapacity;
+            r_MaxBatteryHoursCapacity = i_MaxBatteryHoursCapacity;
             m_RemainingBatteryHoursCapacity = 0;
         }
+
         public override float EnergySourcePercentage
         {
             get
             {
-                return (m_RemainingBatteryHoursCapacity / m_MaxBatteryHoursCapacity) * 100;
+                return (m_RemainingBatteryHoursCapacity / r_MaxBatteryHoursCapacity) * 100;
             }
 
             set
@@ -26,26 +26,26 @@ namespace Ex03.GarageLogic
                 }
                 else
                 {
-                    m_RemainingBatteryHoursCapacity = (value * m_MaxBatteryHoursCapacity) / 100;
+                    m_RemainingBatteryHoursCapacity = (value * r_MaxBatteryHoursCapacity) / 100;
                 }
             }
         }
 
-        public void addHoursToBatteryCapacityIfPossible(float i_numberOfHoursToAdd)
+        public void AddHoursToBatteryCapacityIfPossible(float i_NumberOfHoursToAdd)
         {
-            if(m_MaxBatteryHoursCapacity < m_RemainingBatteryHoursCapacity + i_numberOfHoursToAdd)
+            if(r_MaxBatteryHoursCapacity < m_RemainingBatteryHoursCapacity + i_NumberOfHoursToAdd)
             {
-                throw new ValueRangeException("battery remaining capacity (in hours)", 0, m_MaxBatteryHoursCapacity);
+                throw new ValueRangeException("battery remaining capacity (in hours)", 0, r_MaxBatteryHoursCapacity);
             }
             else
             {
-                m_RemainingBatteryHoursCapacity += i_numberOfHoursToAdd;
+                m_RemainingBatteryHoursCapacity += i_NumberOfHoursToAdd;
             }
         }
 
         public override string GetSpecificEnergySourceDetails()
         {
-            return $"Battery Capacity: {m_RemainingBatteryHoursCapacity:F2} / {m_MaxBatteryHoursCapacity:F2} Hours";
+            return $"Battery Capacity: {m_RemainingBatteryHoursCapacity:F2} / {r_MaxBatteryHoursCapacity:F2} Hours";
         }
     }
 }

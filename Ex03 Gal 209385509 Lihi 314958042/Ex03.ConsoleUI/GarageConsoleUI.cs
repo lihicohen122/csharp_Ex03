@@ -34,63 +34,90 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
 
-            if(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
+            if (r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
-                Console.WriteLine($"A vehicle with license plate '{licensePlate}' is already in the garage. Moving state to 'InRepair'.");
-                r_GarageManager.SetVehicleInRepairByLicensePlate(licensePlate);
+                handleExistingVehicle(licensePlate);
             }
             else
             {
-                string supportedTypes = string.Join(", ", VehicleCreator.SupportedTypes);
+                handleNewVehicleRegistration(licensePlate);
+            }
+        }
 
-                Console.WriteLine($"What is the vehicle type? ({supportedTypes}): ");
-                string vehicleType = Console.ReadLine();
+        private void handleExistingVehicle(string i_LicensePlate)
+        {
+            Console.WriteLine($"A vehicle with license plate '{i_LicensePlate}' is already in the garage. Moving state to 'InRepair'.");
+            r_GarageManager.SetVehicleInRepairByLicensePlate(i_LicensePlate);
+        }
 
-                while(!VehicleCreator.SupportedTypes.Contains(vehicleType))
-                {
-                    Console.WriteLine("Unsupported vehicle type. Please select a valid type from the list:");
-                    vehicleType = Console.ReadLine();
-                }
+        private void handleNewVehicleRegistration(string i_LicensePlate)
+        {
+            string vehicleType = getValidVehicleType();
 
-                Console.WriteLine("What is the vehicle's model name? ");
-                string modelName = Console.ReadLine();
+            Console.WriteLine("What is the vehicle's model name? ");
+            string modelName = Console.ReadLine();
 
-                r_GarageManager.BeginNewVehicleRegistration(vehicleType, licensePlate, modelName);
-                string[] vehicleDataArray = new string[10];
+            r_GarageManager.BeginNewVehicleRegistration(vehicleType, i_LicensePlate, modelName);
+            string[] vehicleDataArray = new string[10];
 
-                vehicleDataArray[(int)ePropertyType.VehicleType] = vehicleType;
-                vehicleDataArray[(int)ePropertyType.LicensePlate] = licensePlate;
-                vehicleDataArray[(int)ePropertyType.ModelName] = modelName;
-                Console.WriteLine("Who is the owner of the vehicle? ");
-                vehicleDataArray[(int)ePropertyType.OwnerName] = Console.ReadLine();
-                Console.WriteLine("What is the owner's phone number? ");
-                vehicleDataArray[(int)ePropertyType.OwnerPhoneNumber] = Console.ReadLine();
-                Console.WriteLine("What is the current energy percentage (0-100)? ");
-                vehicleDataArray[(int)ePropertyType.EnergySourcePercentage] = Console.ReadLine();
-                Console.WriteLine("Who is the manufacturer of the wheels?");
-                vehicleDataArray[(int)ePropertyType.TierModel] = Console.ReadLine();
-                Console.WriteLine("What is the current wheels air pressure?");
-                vehicleDataArray[(int)ePropertyType.CurrentAirPressure] = Console.ReadLine();
-                List<string> specificQuestions = r_GarageManager.GetQuestionsForCurrentRegistration();
-                int currentIndex = (int)ePropertyType.SpecificProperty1;
-                
-                foreach (string question in specificQuestions)
-                {
-                    Console.WriteLine(question);
-                    vehicleDataArray[currentIndex] = Console.ReadLine();
-                    currentIndex++;
-                }
+            collectBasicVehicleInfo(vehicleDataArray, vehicleType, i_LicensePlate, modelName);
+            collectSpecificVehicleInfo(vehicleDataArray);
 
-                try
-                {
-                    r_GarageManager.CommitVehicleRegistration(vehicleDataArray);
-                    Console.WriteLine("Success! New vehicle has been successfully added to the garage.");
-                }
-                catch(ArgumentException exception)
-                {
-                    Console.WriteLine(exception.Message);
-                    Console.WriteLine("Error: Vehicle was not added to the garage due to the abovementioned reason(s). Please try again.");
-                }
+            try
+            {
+                r_GarageManager.CommitVehicleRegistration(vehicleDataArray);
+                Console.WriteLine("Success! New vehicle has been successfully added to the garage.");
+            }
+            catch (ArgumentException exception)
+            {
+                Console.WriteLine(exception.Message);
+                Console.WriteLine("Error: Vehicle was not added to the garage due to the abovementioned reason(s). Please try again.");
+            }
+        }
+
+        private string getValidVehicleType()
+        {
+            string supportedTypes = string.Join(", ", VehicleCreator.SupportedTypes);
+
+            Console.WriteLine($"What is the vehicle type? ({supportedTypes}): ");
+            string vehicleType = Console.ReadLine();
+
+            while(!VehicleCreator.SupportedTypes.Contains(vehicleType))
+            {
+                Console.WriteLine("Unsupported vehicle type. Please select a valid type from the list:");
+                vehicleType = Console.ReadLine();
+            }
+
+            return vehicleType;
+        }
+
+        private void collectBasicVehicleInfo(string[] i_DataArray, string i_Type, string i_License, string i_Model)
+        {
+            i_DataArray[(int)ePropertyType.VehicleType] = i_Type;
+            i_DataArray[(int)ePropertyType.LicensePlate] = i_License;
+            i_DataArray[(int)ePropertyType.ModelName] = i_Model;
+            Console.WriteLine("Who is the owner of the vehicle? ");
+            i_DataArray[(int)ePropertyType.OwnerName] = Console.ReadLine();
+            Console.WriteLine("What is the owner's phone number? ");
+            i_DataArray[(int)ePropertyType.OwnerPhoneNumber] = Console.ReadLine();
+            Console.WriteLine("What is the current energy percentage (0-100)? ");
+            i_DataArray[(int)ePropertyType.EnergySourcePercentage] = Console.ReadLine();
+            Console.WriteLine("Who is the manufacturer of the wheels?");
+            i_DataArray[(int)ePropertyType.TierModel] = Console.ReadLine();
+            Console.WriteLine("What is the current wheels air pressure?");
+            i_DataArray[(int)ePropertyType.CurrentAirPressure] = Console.ReadLine();
+        }
+
+        private void collectSpecificVehicleInfo(string[] i_DataArray)
+        {
+            List<string> specificQuestions = r_GarageManager.GetQuestionsForCurrentRegistration();
+            int currentIndex = (int)ePropertyType.SpecificProperty1;
+
+            foreach(string question in specificQuestions)
+            {
+                Console.WriteLine(question);
+                i_DataArray[currentIndex] = Console.ReadLine();
+                currentIndex++;
             }
         }
 
@@ -204,6 +231,7 @@ namespace Ex03.ConsoleUI
             {
                 Console.WriteLine("How many minutes should we charge the vehicle's battery?");
                 string minutesToLoadBatteryWithUserUnput = Console.ReadLine();
+
                 try
                 {
                     r_GarageManager.ChargeBatteryForElectricVehicle(licensePlate, minutesToLoadBatteryWithUserUnput);
@@ -252,14 +280,14 @@ namespace Ex03.ConsoleUI
                 string userInput = Console.ReadLine();
                 bool isValidUserOption = int.TryParse(userInput, out userOption);
 
-                while (!isValidUserOption || userOption < 1 || userOption > k_QuitOption)
+                while(!isValidUserOption || userOption < 1 || userOption > k_QuitOption)
                 {
                     Console.WriteLine("Invalid option number. Please enter a valid option.");
                     userInput = Console.ReadLine();
                     isValidUserOption = int.TryParse(userInput, out userOption);
                 }
 
-                switch (userOption)
+                switch(userOption)
                 {
                     case 1:
                         loadDataFromDatabaseFile();
