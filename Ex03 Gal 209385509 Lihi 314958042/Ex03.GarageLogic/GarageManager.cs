@@ -183,7 +183,7 @@ namespace Ex03.GarageLogic
             
             if(vehicleBattery == null)
             {
-                throw new FormatException($"The vehicle with license plate '{i_LicensePlate}' is not fuel based and therefore cannot be filled with fuel.");
+                throw new FormatException($"The vehicle with license plate '{i_LicensePlate}' is not battery based and therefore cannot be filled with electricity.");
             }
 
             vehicleBattery.AddHoursToBatteryCapacityIfPossible(hoursToLoadBattery);

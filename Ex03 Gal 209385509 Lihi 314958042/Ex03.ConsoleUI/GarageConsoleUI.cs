@@ -8,7 +8,7 @@ namespace Ex03.ConsoleUI
     internal class GarageConsoleUI
     {
         private const int k_QuitOption = 10;
-        private Menu m_GarageUIMenu;
+        private readonly Menu r_GarageUIMenu;
         private readonly GarageManager r_GarageManager;
 
         private void printWelcomingUserMessage()
@@ -20,10 +20,10 @@ namespace Ex03.ConsoleUI
         {
             try
             {
-                r_GarageManager.LoadDataFromDatabaseFile();
+                r_GarageManager.LoadDatafromDatabaseFile();
                 Console.WriteLine("Data loaded successfully!");
             }
-            catch (Exception exception)
+            catch(Exception exception)
             {
                 Console.WriteLine($"Error loading database: {exception.Message}");
             }
@@ -155,7 +155,7 @@ namespace Ex03.ConsoleUI
         {
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
-
+            
             if(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 Console.WriteLine($"What is the requested new vehicle state for the vehicle with the license plate '{licensePlate}' in the garage ('InRepair', 'Repaired' or 'Paid'): ");
@@ -166,7 +166,7 @@ namespace Ex03.ConsoleUI
                     r_GarageManager.SetVehicleState(licensePlate, newVehicleState);
                     Console.WriteLine($"Success! The vehicle state for the vehicle with license plate '{licensePlate}' has been updated to '{newVehicleState}'!");
                 }
-                catch (Exception exception)
+                catch(Exception exception)
                 {
                     Console.WriteLine($"Error: {exception.Message}");
                 }
@@ -265,7 +265,7 @@ namespace Ex03.ConsoleUI
 
         public GarageConsoleUI()
         {
-            m_GarageUIMenu = new Menu();
+            r_GarageUIMenu = new Menu();
             r_GarageManager = new GarageManager();
         }
 
@@ -276,7 +276,7 @@ namespace Ex03.ConsoleUI
             printWelcomingUserMessage();
             while(userOption != k_QuitOption)
             {
-                m_GarageUIMenu.PrintMenu();
+                r_GarageUIMenu.PrintMenu();
                 string userInput = Console.ReadLine();
                 bool isValidUserOption = int.TryParse(userInput, out userOption);
 

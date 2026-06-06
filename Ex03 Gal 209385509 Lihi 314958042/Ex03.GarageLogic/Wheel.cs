@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
 
         private void fillWheelWithAirIfPossible(float i_AirAmountToFill)
         {
-            if (MaxAirPressure >= i_AirAmountToFill + CurrentAirPressure)
+            if(MaxAirPressure >= i_AirAmountToFill + CurrentAirPressure)
             {
                 m_CurrentAirPressure += i_AirAmountToFill;
             }
@@ -34,7 +34,7 @@ namespace Ex03.GarageLogic
             get { return m_CurrentAirPressure; }
             set
             {
-                if (value < 0 || value > r_MaxAirPressure)
+                if(value < 0 || value > r_MaxAirPressure)
                 {
                     throw new ValueRangeException("wheel air pressure", 0, r_MaxAirPressure);
                 }
