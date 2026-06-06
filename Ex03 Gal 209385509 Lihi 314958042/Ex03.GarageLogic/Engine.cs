@@ -22,7 +22,7 @@ namespace Ex03.GarageLogic
             {
                 if(value < 0 || value > 100)
                 {
-                    throw new ValueRangeException("setting fuel parameter", 0, r_MaxAmountOfFuel);
+                    throw new ValueRangeException("setting fuel parameter", 0, 100);
                 }
                 else
                 {

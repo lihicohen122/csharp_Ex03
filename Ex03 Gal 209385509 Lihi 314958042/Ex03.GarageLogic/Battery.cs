@@ -22,7 +22,7 @@ namespace Ex03.GarageLogic
             {
                 if(value < 0 || value > 100)
                 {
-                    throw new ValueRangeException("setting battery charge parameter", 0, m_MaxBatteryHoursCapacity);
+                    throw new ValueRangeException("setting battery charge parameter", 0, 100);
                 }
                 else
                 {
