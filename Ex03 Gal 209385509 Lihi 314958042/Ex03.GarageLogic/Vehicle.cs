@@ -13,6 +13,24 @@ namespace Ex03.GarageLogic
         protected Wheel[] m_Wheels;
         protected EnergySource m_EnergySource;
         protected eVehicleState m_VehicleState;
+        
+        private string getVehicleTypeAsString()
+        {
+            string className = this.GetType().Name;
+            StringBuilder spacedName = new StringBuilder();
+
+            foreach(char currentLetter in className)
+            {
+                if(char.IsUpper(currentLetter) && spacedName.Length > 0)
+                {
+                    spacedName.Append(' ');
+                }
+
+                spacedName.Append(currentLetter);
+            }
+
+            return spacedName.ToString();
+        }
 
         protected Vehicle()
         {
@@ -92,6 +110,7 @@ namespace Ex03.GarageLogic
             StringBuilder result = new StringBuilder();
             
             result.AppendLine("=== VEHICLE INFORMATION ===");
+            result.AppendLine($"Vehicle Type: {getVehicleTypeAsString()}");
             result.AppendLine($"License Plate: {m_LicenseID}");
             result.AppendLine($"Model Name: {m_ModelName}");
             result.AppendLine($"Vehicle State: {m_VehicleState}");
@@ -125,7 +144,8 @@ namespace Ex03.GarageLogic
             string specificVehicleDetails = GetSpecificVehicleDetails();
             if(!string.IsNullOrEmpty(specificVehicleDetails))
             {
-                result.AppendLine(specificVehicleDetails);
+                result.AppendLine("\n--- SPECIFIC VEHICLE INFORMATION ---");
+                result.Append(specificVehicleDetails);
             }
 
             return result.ToString();
