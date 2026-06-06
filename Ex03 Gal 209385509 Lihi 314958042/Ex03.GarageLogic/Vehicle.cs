@@ -6,12 +6,12 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-        protected const int k_ExpectedPropertiesCount = 10;
-        protected string m_ModelName;
-        protected string m_LicenseID;
         private Wheel[] m_Wheels;
         private EnergySource m_EnergySource;
         private eVehicleState m_VehicleState;
+        protected const int k_ExpectedPropertiesCount = 10;
+        protected string m_ModelName;
+        protected string m_LicenseID;
         
         private string getVehicleTypeAsString()
         {
@@ -68,7 +68,7 @@ namespace Ex03.GarageLogic
 
         public void InflateAllWheels()
         {
-            if(Wheels != null)
+            if(m_Wheels != null)
             {
                 foreach(Wheel wheel in m_Wheels)
                 {
@@ -85,17 +85,6 @@ namespace Ex03.GarageLogic
         public string LicenseId
         {
             get { return m_LicenseID; }
-        }
-
-        public string ModelName
-        {
-            get { return m_ModelName; }
-        }
-
-        public Wheel[] Wheels
-        {
-            get { return m_Wheels; }
-            set { m_Wheels = value; }
         }
 
         public eVehicleState VehicleState
@@ -141,6 +130,7 @@ namespace Ex03.GarageLogic
             }
 
             string specificVehicleDetails = GetSpecificVehicleDetails();
+            
             if(!string.IsNullOrEmpty(specificVehicleDetails))
             {
                 result.AppendLine("\n--- SPECIFIC VEHICLE INFORMATION ---");

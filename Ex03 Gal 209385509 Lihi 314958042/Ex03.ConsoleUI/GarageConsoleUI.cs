@@ -34,7 +34,7 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
 
-            if (r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
+            if(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
             {
                 handleExistingVehicle(licensePlate);
             }
@@ -68,7 +68,7 @@ namespace Ex03.ConsoleUI
                 r_GarageManager.CommitVehicleRegistration(vehicleDataArray);
                 Console.WriteLine("Success! New vehicle has been successfully added to the garage.");
             }
-            catch (ArgumentException exception)
+            catch(ArgumentException exception)
             {
                 Console.WriteLine(exception.Message);
                 Console.WriteLine("Error: Vehicle was not added to the garage due to the abovementioned reason(s). Please try again.");
@@ -252,15 +252,9 @@ namespace Ex03.ConsoleUI
         {
             Console.WriteLine("What is the license plate of the vehicle? ");
             string licensePlate = Console.ReadLine();
-            
-            if(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate))
-            {
-                Console.WriteLine(r_GarageManager.GetFullVehicleProperties(licensePlate));
-            }
-            else
-            {
-                Console.WriteLine($"Error: There is no vehicle with the license plate {licensePlate} in the database.");
-            }
+
+            Console.WriteLine(r_GarageManager.DoesDatabaseContainLicensePlate(licensePlate) ? r_GarageManager.GetFullVehicleProperties(licensePlate)
+                                  : $"Error: There is no vehicle with the license plate {licensePlate} in the database.");
         }
 
         public GarageConsoleUI()

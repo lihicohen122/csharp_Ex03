@@ -24,10 +24,8 @@ namespace Ex03.GarageLogic
                 {
                     throw new ValueRangeException("setting battery charge parameter", 0, 100);
                 }
-                else
-                {
-                    m_RemainingBatteryHoursCapacity = (value * r_MaxBatteryHoursCapacity) / 100;
-                }
+                
+                m_RemainingBatteryHoursCapacity = (value * r_MaxBatteryHoursCapacity) / 100;
             }
         }
 
@@ -37,10 +35,8 @@ namespace Ex03.GarageLogic
             {
                 throw new ValueRangeException("battery remaining capacity (in hours)", 0, r_MaxBatteryHoursCapacity);
             }
-            else
-            {
-                m_RemainingBatteryHoursCapacity += i_NumberOfHoursToAdd;
-            }
+            
+            m_RemainingBatteryHoursCapacity += i_NumberOfHoursToAdd;
         }
 
         public override string GetSpecificEnergySourceDetails()

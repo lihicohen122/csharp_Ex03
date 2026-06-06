@@ -32,7 +32,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void addFuelIfPossible(float i_AmountToAdd, eFuelType i_FuelType)
+        public void AddFuelIfPossible(float i_AmountToAdd, eFuelType i_FuelType)
         {
             List<string> errorsList = new List<string>();
 

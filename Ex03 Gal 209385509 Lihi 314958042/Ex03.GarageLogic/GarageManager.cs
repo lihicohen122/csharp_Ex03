@@ -17,19 +17,21 @@ namespace Ex03.GarageLogic
             {
                 return vehicleOwner.Vehicle;
             }
+            
             throw new KeyNotFoundException($"The provided license plate '{i_LicensePlate}' was not found in the garage.");
         }
 
         private void parseAndInitializeWheels(string[] i_VehicleProperties, List<string> i_ErrorsList)
         {
-            if (float.TryParse(i_VehicleProperties[(int)ePropertyType.CurrentAirPressure], out float air))
+            if(float.TryParse(i_VehicleProperties[(int)ePropertyType.CurrentAirPressure], out float air))
             {
                 string wheelMaker = i_VehicleProperties[(int)ePropertyType.TierModel];
+                
                 try
                 {
                     m_VehicleUnderRegistration.InitializeWheels(wheelMaker, air);
                 }
-                catch (Exception exception)
+                catch(Exception exception)
                 {
                     i_ErrorsList.Add(exception.Message);
                 }
@@ -46,7 +48,7 @@ namespace Ex03.GarageLogic
             {
                 m_VehicleUnderRegistration.InitializeSpecificVehicleProperties(i_VehicleProperties);
             }
-            catch (Exception exception)
+            catch(Exception exception)
             {
                 i_ErrorsList.Add(exception.Message);
             }
@@ -64,13 +66,13 @@ namespace Ex03.GarageLogic
 
         private void parseAndInitializeEnergySource(string[] i_VehicleProperties, List<string> i_ErrorsList)
         {
-            if (float.TryParse(i_VehicleProperties[(int)ePropertyType.EnergySourcePercentage], out float energy))
+            if(float.TryParse(i_VehicleProperties[(int)ePropertyType.EnergySourcePercentage], out float energy))
             {
                 try
                 {
                     m_VehicleUnderRegistration.InitializeEnergySource(energy);
                 }
-                catch (Exception exception)
+                catch(Exception exception)
                 {
                     i_ErrorsList.Add(exception.Message);
                 }
@@ -94,6 +96,7 @@ namespace Ex03.GarageLogic
             foreach(string line in fileContentLines)
             {
                 string[] vehicleProperties = line.Split(',');
+                
                 BeginNewVehicleRegistration(vehicleProperties[(int)ePropertyType.VehicleType],
                     vehicleProperties[(int)ePropertyType.LicensePlate], vehicleProperties[(int)ePropertyType.ModelName]);
                 CommitVehicleRegistration(vehicleProperties);
@@ -167,7 +170,7 @@ namespace Ex03.GarageLogic
                 throw new FormatException($"The vehicle with license plate '{i_LicensePlate}' is not fuel based and therefore cannot be filled with fuel.");
             }
 
-            vehicleEngine.addFuelIfPossible(fuelAmount, fuelType);
+            vehicleEngine.AddFuelIfPossible(fuelAmount, fuelType);
         }
 
         public void ChargeBatteryForElectricVehicle(string i_LicensePlate, string i_MinutesToLoadBatteryWithUserUnput)
@@ -198,11 +201,12 @@ namespace Ex03.GarageLogic
             }
 
             List<string> filteredLicenses = new List<string>();
-            foreach(KeyValuePair<string, VehicleOwner> kvp in r_Vehicles)
+            
+            foreach(KeyValuePair<string, VehicleOwner> licensePlateVehicleOwnerPair in r_Vehicles)
             {
-                if(kvp.Value.Vehicle.VehicleState == vehicleState)
+                if(licensePlateVehicleOwnerPair.Value.Vehicle.VehicleState == vehicleState)
                 {
-                    filteredLicenses.Add(kvp.Key);
+                    filteredLicenses.Add(licensePlateVehicleOwnerPair.Key);
                 }
             }
 
@@ -242,12 +246,8 @@ namespace Ex03.GarageLogic
 
         public List<string> GetQuestionsForCurrentRegistration()
         {
-            if(m_VehicleUnderRegistration == null)
-            {
-                throw new NullReferenceException("No vehicle is currently being registered.");
-            }
-
-            return m_VehicleUnderRegistration.GetSpecificVehicleQuestions();
+            return m_VehicleUnderRegistration == null ? throw new NullReferenceException("No vehicle is currently being registered.")
+                       : m_VehicleUnderRegistration.GetSpecificVehicleQuestions();
         }
 
         public void CommitVehicleRegistration(string[] i_VehicleProperties)
@@ -257,8 +257,7 @@ namespace Ex03.GarageLogic
             parseAndInitializeEnergySource(i_VehicleProperties, errorsList);
             parseAndInitializeWheels(i_VehicleProperties, errorsList);
             parseSpecificVehicleProperties(i_VehicleProperties, errorsList);
-
-            if (errorsList.Count > 0)
+            if(errorsList.Count > 0)
             {
                 m_VehicleUnderRegistration = null;
                 throw new ArgumentException(string.Join("\n", errorsList));
