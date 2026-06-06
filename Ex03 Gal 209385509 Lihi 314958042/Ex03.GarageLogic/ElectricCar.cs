@@ -1,9 +1,9 @@
-﻿using Ex03.GarageLogic.Enums;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     internal class ElectricCar : Car
     {
+        private const float k_MaxBatteryHoursCapacity = 4.6f;
+        
         public ElectricCar(string i_LicenseID, string i_ModelName)
         {
             m_LicenseID = i_LicenseID;
@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
 
         protected override EnergySource CreateEnergySource()
         {
-            return new Battery(4.6f);
+            return new Battery(k_MaxBatteryHoursCapacity);
         }
     }
 }

@@ -9,21 +9,45 @@ namespace Ex03.GarageLogic
     {
         private const int k_CanDeliverColdCargoIndex = 8;
         private const int k_CargoVolumeIndex = 9;
+        private const eFuelType k_FuelType = eFuelType.Soler;
+        private const float k_MaxFuelAmount = 125f;
+        private const int k_NumOfWheels = 14;
+        private const float k_MaxAirPressure = 28f;
         private bool m_CanDeliverColdCargo;
         private float m_CargoVolume;
 
         protected override EnergySource CreateEnergySource()
         {
-            return new Engine(eFuelType.Soler, 125f);
+            return new Engine(k_FuelType, k_MaxFuelAmount);
         }
 
+        protected override int NumOfWheels
+        {
+            get { return k_NumOfWheels; }
+        }
+
+        protected override float MaxAirPressure
+        {
+            get { return k_MaxAirPressure; }
+        }
+
+        protected override string GetSpecificVehicleDetails()
+        {
+            StringBuilder details = new StringBuilder();
+            
+            details.AppendLine($"Refrigerated Cargo: {(m_CanDeliverColdCargo ? "Yes" : "No")}");
+            details.AppendLine($"Cargo Volume: {m_CargoVolume:F2} Cubic Meters");
+            
+            return details.ToString();
+        }
+        
         public FuelTruck(string i_LicenseID, string i_ModelName)
         {
             m_LicenseID = i_LicenseID;
             m_ModelName = i_ModelName;
         }
 
-        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
+        public override void InitializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
             List<string> errorsList = new List<string>();
 
@@ -46,26 +70,6 @@ namespace Ex03.GarageLogic
             {
                 throw new ArgumentException(string.Join("\n", errorsList));
             }
-        }
-
-        protected override int NumOfWheels
-        {
-            get { return 14; }
-        }
-
-        protected override float MaxAirPressure
-        {
-            get { return 28f; }
-        }
-
-        protected override string GetSpecificVehicleDetails()
-        {
-            StringBuilder details = new StringBuilder();
-            
-            details.AppendLine($"Refrigerated Cargo: {(m_CanDeliverColdCargo ? "Yes" : "No")}");
-            details.AppendLine($"Cargo Volume: {m_CargoVolume:F2} Cubic Meters");
-            
-            return details.ToString();
         }
 
         public override List<string> GetSpecificVehicleQuestions()

@@ -9,10 +9,12 @@ namespace Ex03.GarageLogic
     {
         private const int k_LicenseTypeIndex = 8;
         private const int k_EngineVolumeIndex = 9;
-        protected eLicenseType m_LicenseType;
-        protected int m_EngineVolume;
+        private const int k_NumOfWheels = 2;
+        private const float k_MaxAirPressure = 30f;
+        private eLicenseType m_LicenseType;
+        private int m_EngineVolume;
 
-        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
+        public override void InitializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
             List<string> errorsList = new List<string>();
 
@@ -39,12 +41,12 @@ namespace Ex03.GarageLogic
 
         protected override int NumOfWheels
         {
-            get { return 2; }
+            get { return k_NumOfWheels; }
         }
 
         protected override float MaxAirPressure
         {
-            get { return 30f; }
+            get { return k_MaxAirPressure; }
         }
 
         protected override string GetSpecificVehicleDetails()

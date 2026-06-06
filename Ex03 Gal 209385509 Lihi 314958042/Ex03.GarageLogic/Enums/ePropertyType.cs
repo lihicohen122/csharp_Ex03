@@ -11,6 +11,5 @@
         OwnerName,
         OwnerPhoneNumber,
         SpecificProperty1,
-        SpecificProperty2,
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     internal class ElectricMotorcycle : Motorcycle
     {
+        private const float k_MaxBatteryHoursCapacity = 3f;
+        
         public ElectricMotorcycle(string i_LicenseID, string i_ModelName)
         {
             m_LicenseID = i_LicenseID;
@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
 
         protected override EnergySource CreateEnergySource()
         {
-            return new Battery(3f);
+            return new Battery(k_MaxBatteryHoursCapacity);
         }
     }
 }

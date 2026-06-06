@@ -231,7 +231,7 @@ namespace Ex03.GarageLogic
 
             try
             {
-                m_VehicleUnderRegistration.initializeSpecificVehicleProperties(i_VehicleProperties);
+                m_VehicleUnderRegistration.InitializeSpecificVehicleProperties(i_VehicleProperties);
             }
             catch(Exception exception)
             {

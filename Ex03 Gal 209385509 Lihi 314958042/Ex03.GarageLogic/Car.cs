@@ -9,10 +9,42 @@ namespace Ex03.GarageLogic
     {
         private const int k_CarColorIndex = 8;
         private const int k_NumberOfDoorsIndex = 9;
-        protected eCarColor m_CarColor;
-        protected eNumberOfCarDoors m_NumberOfDoors;
+        private const int k_NumOfWheels = 5;
+        private const float k_MaxAirPressure = 31f;
+        private eCarColor m_CarColor;
+        private eNumberOfCarDoors m_NumberOfDoors;
 
-        public override void initializeSpecificVehicleProperties(string[] i_VehicleProperties)
+        protected override int NumOfWheels
+        {
+            get { return k_NumOfWheels; }
+        }
+
+        protected override float MaxAirPressure
+        {
+            get { return k_MaxAirPressure; }
+        }
+
+        protected override string GetSpecificVehicleDetails()
+        {
+            StringBuilder details = new StringBuilder();
+            
+            details.AppendLine($"Car Color: {m_CarColor}");
+            details.AppendLine($"Number of Doors: {m_NumberOfDoors}");
+            
+            return details.ToString();
+        }
+
+        public override List<string> GetSpecificVehicleQuestions()
+        {
+            List<string> questions = new List<string>();
+
+            questions.Add($"What is the car's color ({string.Join(", ", Enum.GetNames(typeof(eCarColor)))})? ");
+            questions.Add($"How many doors does the car have ({string.Join(", ", Enum.GetNames(typeof(eNumberOfCarDoors)))})? ");
+
+            return questions;
+        }
+        
+        public override void InitializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
             List<string> errorsList = new List<string>();
 
@@ -35,34 +67,6 @@ namespace Ex03.GarageLogic
             {
                 throw new ArgumentException(string.Join("\n", errorsList));
             }
-        }
-
-        protected override int NumOfWheels
-        {
-            get { return 5; }
-        }
-
-        protected override float MaxAirPressure
-        {
-            get { return 31f; }
-        }
-
-        protected override string GetSpecificVehicleDetails()
-        {
-            StringBuilder details = new StringBuilder();
-            details.AppendLine($"Car Color: {m_CarColor}");
-            details.AppendLine($"Number of Doors: {m_NumberOfDoors}");
-            return details.ToString();
-        }
-
-        public override List<string> GetSpecificVehicleQuestions()
-        {
-            List<string> questions = new List<string>();
-
-            questions.Add($"What is the car's color ({string.Join(", ", Enum.GetNames(typeof(eCarColor)))})? ");
-            questions.Add($"How many doors does the car have ({string.Join(", ", Enum.GetNames(typeof(eNumberOfCarDoors)))})? ");
-
-            return questions;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using Ex03.GarageLogic.Enums;
 
@@ -10,9 +9,9 @@ namespace Ex03.GarageLogic
         protected const int k_ExpectedPropertiesCount = 10;
         protected string m_ModelName;
         protected string m_LicenseID;
-        protected Wheel[] m_Wheels;
-        protected EnergySource m_EnergySource;
-        protected eVehicleState m_VehicleState;
+        private Wheel[] m_Wheels;
+        private EnergySource m_EnergySource;
+        private eVehicleState m_VehicleState;
         
         private string getVehicleTypeAsString()
         {
@@ -36,10 +35,20 @@ namespace Ex03.GarageLogic
         {
             m_VehicleState = eVehicleState.InRepair;
         }
+        
+        protected abstract int NumOfWheels
+        {
+            get;
+        }
+
+        protected abstract float MaxAirPressure
+        {
+            get;
+        }
 
         protected abstract EnergySource CreateEnergySource();
 
-        public abstract void initializeSpecificVehicleProperties(string[] i_VehicleProperties);
+        public abstract void InitializeSpecificVehicleProperties(string[] i_VehicleProperties);
 
         public void InitializeWheels(string i_ManufacturerName, float i_CurrentAirPressure)
         {
@@ -66,16 +75,6 @@ namespace Ex03.GarageLogic
                     wheel.InflateToMax();
                 }
             }
-        }
-
-        protected abstract int NumOfWheels
-        {
-            get;
-        }
-
-        protected abstract float MaxAirPressure
-        {
-            get;
         }
 
         public EnergySource EnergySource
