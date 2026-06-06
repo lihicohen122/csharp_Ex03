@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
 
         private void fillWheelWithAirIfPossible(float i_AirAmountToFill)
         {
-            if (MaxAirPressure > i_AirAmountToFill + CurrentAirPressure)
+            if (MaxAirPressure >= i_AirAmountToFill + CurrentAirPressure)
             {
                 m_CurrentAirPressure += i_AirAmountToFill;
             }
