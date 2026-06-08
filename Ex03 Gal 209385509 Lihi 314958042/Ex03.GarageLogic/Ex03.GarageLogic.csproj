@@ -59,10 +59,5 @@
     <Compile Include="VehicleOwner.cs" />
     <Compile Include="Wheel.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="VehiclesDB.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
