@@ -80,11 +80,8 @@ namespace Ex03.GarageLogic
         }
 
         protected abstract EnergySource CreateEnergySource();
-        
         protected abstract string GetSpecificVehicleDetails();
-
         public abstract void InitializeSpecificVehicleProperties(string[] i_VehicleProperties);
-
         public void InitializeWheels(string i_ManufacturerName, float i_CurrentAirPressure)
         {
             m_Wheels = new Wheel[NumOfWheels];

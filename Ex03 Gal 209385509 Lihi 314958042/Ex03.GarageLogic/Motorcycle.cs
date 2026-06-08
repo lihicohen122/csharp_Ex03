@@ -14,6 +14,26 @@ namespace Ex03.GarageLogic
         private eLicenseType m_LicenseType;
         private int m_EngineVolume;
 
+        protected override int NumOfWheels
+        {
+            get { return k_NumOfWheels; }
+        }
+
+        protected override float MaxAirPressure
+        {
+            get { return k_MaxAirPressure; }
+        }
+
+        protected override string GetSpecificVehicleDetails()
+        {
+            StringBuilder details = new StringBuilder();
+            
+            details.AppendLine($"License Type: {m_LicenseType}");
+            details.AppendLine($"Engine Volume: {m_EngineVolume} cc");
+            
+            return details.ToString();
+        }
+        
         public override void InitializeSpecificVehicleProperties(string[] i_VehicleProperties)
         {
             List<string> errorsList = new List<string>();
@@ -37,26 +57,6 @@ namespace Ex03.GarageLogic
             {
                 throw new ArgumentException(string.Join("\n", errorsList));
             }
-        }
-
-        protected override int NumOfWheels
-        {
-            get { return k_NumOfWheels; }
-        }
-
-        protected override float MaxAirPressure
-        {
-            get { return k_MaxAirPressure; }
-        }
-
-        protected override string GetSpecificVehicleDetails()
-        {
-            StringBuilder details = new StringBuilder();
-            
-            details.AppendLine($"License Type: {m_LicenseType}");
-            details.AppendLine($"Engine Volume: {m_EngineVolume} cc");
-            
-            return details.ToString();
         }
 
         public override List<string> GetSpecificVehicleQuestions()
