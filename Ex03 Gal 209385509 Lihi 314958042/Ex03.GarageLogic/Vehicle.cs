@@ -30,6 +30,39 @@ namespace Ex03.GarageLogic
 
             return spacedName.ToString();
         }
+        
+        private string getVehicleDetailsBody()
+        {
+            StringBuilder result = new StringBuilder();
+
+            result.AppendLine("\n--- WHEELS INFORMATION ---");
+            if(m_Wheels != null)
+            {
+                for(int i = 0; i < m_Wheels.Length; ++i)
+                {
+                    result.AppendLine($"Wheel {i + 1}:");
+                    result.AppendLine($"  Manufacturer: {m_Wheels[i].ManufacturerName}");
+                    result.AppendLine($"  Current Air Pressure: {m_Wheels[i].CurrentAirPressure:F2} / {m_Wheels[i].MaxAirPressure:F2} PSI");
+                }
+            }
+
+            result.AppendLine("\n--- ENERGY SOURCE INFORMATION ---");
+            if(m_EnergySource != null)
+            {
+                result.AppendLine($"Energy Level: {m_EnergySource.EnergySourcePercentage:F2}%");
+                result.AppendLine(m_EnergySource.GetSpecificEnergySourceDetails());
+            }
+
+            string specificVehicleDetails = GetSpecificVehicleDetails();
+            
+            if(!string.IsNullOrEmpty(specificVehicleDetails))
+            {
+                result.AppendLine("\n--- SPECIFIC VEHICLE INFORMATION ---");
+                result.Append(specificVehicleDetails);
+            }
+
+            return result.ToString();
+        }
 
         protected Vehicle()
         {
@@ -47,6 +80,8 @@ namespace Ex03.GarageLogic
         }
 
         protected abstract EnergySource CreateEnergySource();
+        
+        protected abstract string GetSpecificVehicleDetails();
 
         public abstract void InitializeSpecificVehicleProperties(string[] i_VehicleProperties);
 
@@ -102,45 +137,11 @@ namespace Ex03.GarageLogic
             result.AppendLine($"License Plate: {m_LicenseID}");
             result.AppendLine($"Model Name: {m_ModelName}");
             result.AppendLine($"Vehicle State: {m_VehicleState}");
-            result.Append(GetVehicleDetailsBody());
+            result.Append(getVehicleDetailsBody());
             
             return result.ToString();
         }
-
-        public string GetVehicleDetailsBody()
-        {
-            StringBuilder result = new StringBuilder();
-
-            result.AppendLine("\n--- WHEELS INFORMATION ---");
-            if(m_Wheels != null)
-            {
-                for(int i = 0; i < m_Wheels.Length; ++i)
-                {
-                    result.AppendLine($"Wheel {i + 1}:");
-                    result.AppendLine($"  Manufacturer: {m_Wheels[i].ManufacturerName}");
-                    result.AppendLine($"  Current Air Pressure: {m_Wheels[i].CurrentAirPressure:F2} / {m_Wheels[i].MaxAirPressure:F2} PSI");
-                }
-            }
-
-            result.AppendLine("\n--- ENERGY SOURCE INFORMATION ---");
-            if(m_EnergySource != null)
-            {
-                result.AppendLine($"Energy Level: {m_EnergySource.EnergySourcePercentage:F2}%");
-                result.AppendLine(m_EnergySource.GetSpecificEnergySourceDetails());
-            }
-
-            string specificVehicleDetails = GetSpecificVehicleDetails();
-            
-            if(!string.IsNullOrEmpty(specificVehicleDetails))
-            {
-                result.AppendLine("\n--- SPECIFIC VEHICLE INFORMATION ---");
-                result.Append(specificVehicleDetails);
-            }
-
-            return result.ToString();
-        }
-
-        protected abstract string GetSpecificVehicleDetails();
+        
         public abstract List<string> GetSpecificVehicleQuestions();
     }
 }
